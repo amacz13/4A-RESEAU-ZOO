@@ -16,12 +16,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
+    public static GraphicsContext gc;
+
     public static void main(String[] args) throws InterruptedException {
         Zoo zoo = new Zoo(45,45);
         zoo.addAnimal(new Animal(15,15));
         zoo.afficher();
 
-        Runner r = new Runner();
+        Runner r = new Runner(gc);
 
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
@@ -34,7 +36,7 @@ public class Main extends Application {
         Canvas canvas = new Canvas(576, 576);
 
         // Get the graphics context of the canvas
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         // Load the Image
         String imagePath = "/tiles/grass16.png";
         Image image = new Image(imagePath);

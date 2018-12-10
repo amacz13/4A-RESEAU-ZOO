@@ -1,18 +1,24 @@
 package fr.ensim.nicoaxel.zoo;
 
+import fr.ensim.nicoaxel.zoo.types.Espece;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
 public class Animal {
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
     private int x, y;
     private int destX, destY;
-    private char sex;
+    private char sexe;
+    private Espece esp;
 
     public Animal() {
-        speed = 2;
-        countSpeed = speed ;
-        x = 5;
-        y = 5;
-        sex = 'm';
+        vitesse = 5;
+        x=5;
+        y=5;
+        sexe='m';
+        esp = Espece.LION;
+        choixDest();
     }
 
     public Animal(int x, int y) {
@@ -57,6 +63,19 @@ public class Animal {
 
     public int getY() {
         return y;
+    }
+
+    public void renderAnimal(GraphicsContext gc){
+        String fileName;
+        switch (esp) {
+            case LION:
+                fileName = "/animals/lion.png";
+                break;
+            default:
+                fileName = "/animals/unknown.png";
+        }
+        Image image = new Image(fileName);
+        gc.drawImage(image, x * 16, y*16);
     }
 
 }
