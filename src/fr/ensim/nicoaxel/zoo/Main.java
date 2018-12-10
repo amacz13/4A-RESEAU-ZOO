@@ -17,12 +17,8 @@ import java.util.concurrent.TimeUnit;
 public class Main extends Application {
 
     public static void main(String[] args) throws InterruptedException {
-        Zoo zoo = new Zoo(6,15);
-        zoo.addAnimal(new Animal());
-        zoo.afficher();
-
-        Thread.sleep(200);
-        zoo.addAnimal(new Animal(2,2));
+        Zoo zoo = new Zoo(45,45);
+        zoo.addAnimal(new Animal(15,15));
         zoo.afficher();
 
         Runner r = new Runner();

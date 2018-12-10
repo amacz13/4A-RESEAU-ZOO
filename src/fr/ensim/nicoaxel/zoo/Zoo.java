@@ -3,36 +3,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Zoo {
-    private List<Animal> animaux;
-    private int tailleX, tailleY;
+    private List<Animal> animals;
+    private int sizeX, sizeY;
 
-    public Zoo(int tailleX, int tailleY) {
-        this.tailleX = tailleX;
-        this.tailleY = tailleY;
-        animaux = new ArrayList<>();
+    public Zoo(int sizeX, int sizeY) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        animals = new ArrayList<>();
     }
 
     public void addAnimal(Animal a) {
-        animaux.add(a);
+        animals.add(a);
     }
 
-    public void afficher() {
-        System.out.println();
-        boolean write = false;
-        for (int x = 0; x < tailleX; x++) {
-            for (int y = 0; y < tailleY; y++) {
-                for (Animal a : animaux) {
-                    if (x == a.getX() && y == a.getY()) {
-                        System.out.print(" A ");
-                        write = true;
-                    }
-                }
-                if (!write) {
-                    System.out.print(" - ");
-                }
-                write = false;
-            }
-            System.out.println("\n");
+    public void changeDestAnimal(int i){
+        animals.get(i).choixDest(sizeX, sizeY);
+    }
+
+    public void move(int i){
+        for(Animal a : animals){
+            a.move();
         }
     }
 
