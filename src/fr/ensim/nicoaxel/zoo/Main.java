@@ -21,7 +21,7 @@ public class Main extends Application {
     public static void main(String[] args) throws InterruptedException {
         Zoo zoo = new Zoo(45,45);
         zoo.addAnimal(new Animal(15,15));
-        zoo.afficher();
+        zoo.move(0);
 
         Runner r = new Runner(gc);
 

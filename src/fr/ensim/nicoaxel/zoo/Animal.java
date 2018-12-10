@@ -9,16 +9,15 @@ public class Animal {
     private int countSpeed;  //countSpeed is a counter for move animal
     private int x, y;
     private int destX, destY;
-    private char sexe;
+    private char sex;
     private Espece esp;
 
     public Animal() {
-        vitesse = 5;
+        speed = 5;
         x=5;
         y=5;
-        sexe='m';
+        sex ='m';
         esp = Espece.LION;
-        choixDest();
     }
 
     public Animal(int x, int y) {
@@ -27,7 +26,7 @@ public class Animal {
         this.y = y;
     }
 
-    public void choixDest(int maxX, int maxY) {
+    public void choiceDest(int maxX, int maxY) {
         destX = (int) (Math.random() * maxX);
         destY = (int) (Math.random() * maxY);
     }

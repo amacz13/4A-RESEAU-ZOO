@@ -17,7 +17,7 @@ public class Zoo {
     }
 
     public void changeDestAnimal(int i){
-        animals.get(i).choixDest(sizeX, sizeY);
+        animals.get(i).choiceDest(sizeX, sizeY);
     }
 
     public void move(int i){
