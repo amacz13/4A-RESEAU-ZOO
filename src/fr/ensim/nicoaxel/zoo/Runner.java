@@ -1,9 +1,12 @@
 package fr.ensim.nicoaxel.zoo;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Runner implements Runnable{
+
+    private static final Logger log = LogManager.getRootLogger();
 
     private int c = 0;
     private GraphicsContext gc;
@@ -17,18 +20,8 @@ public class Runner implements Runnable{
 
     @Override
     public void run() {
-        c++;
-        //TODO log4j
-        System.out.println("Hi "+c+" ("+c%30+")");
+        log.info("Temps "+(c++));
 
-        //Tout le carnage qui suit va prochaine degager, tout partira dans la classe zoo, afin d'avoir un runner propre avec une seule méthode :)
-        zoo.getAnimal(0).move();
-        zoo.getAnimal(0).renderAnimal(gc);
-
-        //Ca ca partira dans la classe animal
-        if(c%30 == 3){
-            zoo.getAnimal(0).choiceDest(40,40);
-        }
-
+        zoo.action(gc);
     }
 }

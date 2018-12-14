@@ -1,4 +1,6 @@
 package fr.ensim.nicoaxel.zoo;
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +19,24 @@ public class Zoo {
     }
 
     public void changeDestAnimal(int i){
-        animals.get(i).choiceDest(sizeX, sizeY);
+        animals.get(i).choiceDest();
     }
 
-    public Animal getAnimal(int i){
-        return animals.get(i);
-    }
-
-    public void move(int i){
+    public void move(){
         for(Animal a : animals){
-            a.move();
+            a.action();
         }
+    }
+
+    public void render(GraphicsContext gc){
+        for(Animal a : animals){
+            a.renderAnimal(gc);
+        }
+    }
+
+    public void action(GraphicsContext gc){
+        this.move();
+        this.render(gc);
     }
 
 }
