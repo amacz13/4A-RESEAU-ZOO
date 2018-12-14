@@ -20,6 +20,10 @@ public class Zoo {
         animals.get(i).choiceDest(sizeX, sizeY);
     }
 
+    public Animal getAnimal(int i){
+        return animals.get(i);
+    }
+
     public void move(int i){
         for(Animal a : animals){
             a.move();

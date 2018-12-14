@@ -17,16 +17,14 @@ import java.util.concurrent.TimeUnit;
 public class Main extends Application {
 
     public static GraphicsContext gc;
+    public static Zoo zoo;
 
     public static void main(String[] args) throws InterruptedException {
-        Zoo zoo = new Zoo(45,45);
+        zoo = new Zoo(45,45);
         zoo.addAnimal(new Animal(15,15));
-        zoo.move(0);
+        //zoo.move(0);
 
-        Runner r = new Runner(gc);
 
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
 
         Application.launch(args);
     }
@@ -48,6 +46,8 @@ public class Main extends Application {
             }
         }
 
+
+
         Pane root = new Pane();
         root.getChildren().add(canvas);
         Scene scene = new Scene(root, 560, 560);
@@ -55,5 +55,12 @@ public class Main extends Application {
         primaryStage.setTitle("Zoo");
         primaryStage.setResizable(false);
         primaryStage.show();
+
+
+
+        Runner r = new Runner(gc, zoo);
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(r, 0, 500, TimeUnit.MILLISECONDS);
+
     }
 }
