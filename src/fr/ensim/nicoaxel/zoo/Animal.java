@@ -13,7 +13,7 @@ public class Animal {
     private Espece esp;
 
     public Animal() {
-        vitesse = 5;
+        speed = 5;
         x=5;
         y=5;
         sexe='m';
