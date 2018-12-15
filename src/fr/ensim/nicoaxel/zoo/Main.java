@@ -17,23 +17,22 @@ import java.util.concurrent.TimeUnit;
 public class Main extends Application {
 
     public static GraphicsContext gc;
+    public static Zoo zoo;
+    public static int sizeX = 45, sizeY = 45;
 
     public static void main(String[] args) throws InterruptedException {
-        Zoo zoo = new Zoo(45,45);
+        zoo = new Zoo(sizeX,sizeY);
         zoo.addAnimal(new Animal(15,15));
-        zoo.afficher();
+        //zoo.move(0);
 
-        Runner r = new Runner(gc);
 
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
 
         Application.launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Canvas canvas = new Canvas(576, 576);
+        Canvas canvas = new Canvas(16*sizeX, 16*sizeY);
 
         // Get the graphics context of the canvas
         gc = canvas.getGraphicsContext2D();
@@ -42,18 +41,27 @@ public class Main extends Application {
         Image image = new Image(imagePath);
         // Draw the Image
 
-        for (int i = 0; i < 45; i++){
-            for (int j = 0; j < 45; j++) {
+        for (int i = 0; i < sizeX; i++){
+            for (int j = 0; j < sizeY; j++) {
                 gc.drawImage(image, i * 16, j*16);
             }
         }
 
+
+
         Pane root = new Pane();
         root.getChildren().add(canvas);
-        Scene scene = new Scene(root, 560, 560);
+        Scene scene = new Scene(root, 16*sizeX, 16*sizeY);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Zoo");
         primaryStage.setResizable(false);
         primaryStage.show();
+
+
+
+        Runner r = new Runner(gc, zoo);
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(r, 0, 500, TimeUnit.MILLISECONDS);
+
     }
 }

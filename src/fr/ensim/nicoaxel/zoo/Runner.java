@@ -1,21 +1,27 @@
 package fr.ensim.nicoaxel.zoo;
 
 import javafx.scene.canvas.GraphicsContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Runner implements Runnable{
 
+    private static final Logger log = LogManager.getRootLogger();
+
     private int c = 0;
     private GraphicsContext gc;
+    private Zoo zoo;
 
-    Runner(GraphicsContext g) {
+    Runner(GraphicsContext g, Zoo z) {
+        zoo = z;
         gc = g;
     }
 
 
     @Override
     public void run() {
-        System.out.println("Hi "+c);
-        Animal a = new Animal();
-        //a.renderAnimal(gc);
+        log.info("Temps "+(c++));
+
+        zoo.action(gc);
     }
 }

@@ -3,33 +3,59 @@ package fr.ensim.nicoaxel.zoo;
 import fr.ensim.nicoaxel.zoo.types.Espece;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-public class Animal {
+
+import static fr.ensim.nicoaxel.zoo.types.Espece.LION;
+
+public class Animal{
+
+    private static final Logger log = LogManager.getRootLogger();
+    private static final double LIMIT = 8;
+
+
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
     private int x, y;
     private int destX, destY;
-    private char sexe;
-    private Espece esp;
+    private char sex;
+    private Espece espece;
+    private Image image;
 
-    public Animal() {
-        speed = 5;
-        x=5;
-        y=5;
-        sexe='m';
-        esp = Espece.LION;
-        choixDest();
-    }
 
     public Animal(int x, int y) {
-        super();
-        this.x = x;
-        this.y = y;
+        this(x, y, LION, 'm', 1);
     }
 
-    public void choixDest(int maxX, int maxY) {
-        destX = (int) (Math.random() * maxX);
-        destY = (int) (Math.random() * maxY);
+    public Animal(int x, int y, Espece esp, char sex, int speed){
+
+        this.x = x;
+        this.y = y;
+        destX=x;
+        destY=y;
+
+        espece = esp;
+        this.speed = speed;
+        this.sex = sex;
+        image = setImage(espece);
+    }
+
+    public void choiceDest() {
+        destX = (int) (Math.random() * (Main.sizeX-3));
+        destY = (int) (Math.random() * (Main.sizeY-3));
+        log.info("Nouvelle destination : "+destX+" / "+destY);
+    }
+
+    public void action(){
+
+        this.move();
+
+
+        if(Math.random()*100<LIMIT){
+            this.choiceDest();
+        }
+
     }
 
     public void move() {
@@ -43,38 +69,35 @@ public class Animal {
             int difY = y - destY;
 
             if(difX<0){
-                x--;
-            }else if(difX>0){
                 x++;
+            }else if(difX>0){
+                x--;
+            }else if(difX==0){
+                log.debug("Arrivé en X");
             }
 
             if(difY<0){
-                y--;
-            }else if(difY>0){
                 y++;
+            }else if(difY>0){
+                y--;
+            }else if(difY==0){
+                log.debug("Arrivé en Y");
             }
         }
-
+        log.debug("x : "+x+" / y : "+y);
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void renderAnimal(GraphicsContext gc){
-        String fileName;
+    public Image setImage(Espece esp){
         switch (esp) {
             case LION:
-                fileName = "/animals/lion.png";
-                break;
+                return new Image("/animals/lion.png");
             default:
-                fileName = "/animals/unknown.png";
+                return new Image("/animals/unknow.png");
         }
-        Image image = new Image(fileName);
+    }
+
+
+    public void renderAnimal(GraphicsContext gc){
         gc.drawImage(image, x * 16, y*16);
     }
 
