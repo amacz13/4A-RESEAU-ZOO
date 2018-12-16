@@ -17,6 +17,7 @@ public class Animal{
 
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
+    private int oldx, oldy;
     private int x, y;
     private int destX, destY;
     private char sex;
@@ -48,7 +49,8 @@ public class Animal{
     }
 
     public void action(){
-
+        this.oldx = x;
+        this.oldy = y;
         this.move();
 
 
@@ -98,6 +100,8 @@ public class Animal{
 
 
     public void renderAnimal(GraphicsContext gc){
+        Image grass = new Image("/tiles/grass16.png");
+        gc.drawImage(grass, oldx * 16, oldy*16);
         gc.drawImage(image, x * 16, y*16);
     }
 
