@@ -1,6 +1,7 @@
 package fr.ensim.nicoaxel.zoo;
 
 
+import fr.ensim.nicoaxel.zoo.types.ObjectType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -33,7 +34,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Canvas canvas = new Canvas(16*sizeX, 16*sizeY);
 
         // Get the graphics context of the canvas
@@ -56,6 +57,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 16*sizeX, 16*sizeY);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Zoo");
+        primaryStage.getIcons().add(new Image("/animals/lion.png"));
         primaryStage.setResizable(false);
         primaryStage.show();
 
@@ -68,6 +70,7 @@ public class Main extends Application {
         });
 
 
+        zoo.addObstacle(new Obstacle(ObjectType.STONE,25,10,gc));
 
         Runner r = new Runner(gc, zoo);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 
-import static fr.ensim.nicoaxel.zoo.types.Espece.LION;
+import static fr.ensim.nicoaxel.zoo.types.Espece.*;
 
 public class Animal{
 
@@ -94,7 +94,7 @@ public class Animal{
             case LION:
                 return new Image("/animals/lion.png");
             default:
-                return new Image("/animals/unknow.png");
+                return new Image("/unknown.png");
         }
     }
 
