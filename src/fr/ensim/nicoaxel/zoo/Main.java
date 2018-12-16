@@ -1,7 +1,8 @@
 package fr.ensim.nicoaxel.zoo;
 
 
-import fr.ensim.nicoaxel.zoo.types.ObjectType;
+import fr.ensim.nicoaxel.zoo.animals.Lion;
+import fr.ensim.nicoaxel.zoo.utils.Coordinates;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -25,7 +26,6 @@ public class Main extends Application {
 
     public static void main(String[] args) throws InterruptedException {
         zoo = new Zoo(sizeX,sizeY);
-        zoo.addAnimal(new Animal(15,15));
         //zoo.move(0);
 
 
@@ -69,8 +69,9 @@ public class Main extends Application {
             }
         });
 
-
-        zoo.addObstacle(new Obstacle(ObjectType.STONE,25,10,gc));
+        Obstacle.generateObstacles(zoo,gc);
+        Coordinates c = Coordinates.generateCoordinate(zoo);
+        zoo.addAnimal(new Lion(c.x,c.y));
 
         Runner r = new Runner(gc, zoo);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();

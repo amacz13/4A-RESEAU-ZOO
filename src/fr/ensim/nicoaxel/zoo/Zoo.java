@@ -24,6 +24,13 @@ public class Zoo {
         obstacles.add(o);
     }
 
+    public boolean hasObstacle(int x, int y) {
+        for (Obstacle o : obstacles) {
+            if (o.x == x && o.y == y) return true;
+        }
+        return false;
+    }
+
     public void changeDestAnimal(int i){
         animals.get(i).choiceDest();
     }

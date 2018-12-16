@@ -6,10 +6,7 @@ import javafx.scene.image.Image;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-
-import static fr.ensim.nicoaxel.zoo.types.Espece.*;
-
-public class Animal{
+public abstract class Animal{
 
     private static final Logger log = LogManager.getRootLogger();
     private static final double LIMIT = 8;
@@ -24,10 +21,6 @@ public class Animal{
     private Espece espece;
     private Image image;
 
-
-    public Animal(int x, int y) {
-        this(x, y, LION, 'm', 1);
-    }
 
     public Animal(int x, int y, Espece esp, char sex, int speed){
 
