@@ -15,7 +15,7 @@ public class Obstacle {
     public static final int NB_OBJECTS = 50;
 
     public ObjectType type;
-    public int x, y;
+    private int x, y;
     public Image img;
 
     public static void generateObstacles(Zoo zoo,GraphicsContext gc){
@@ -36,7 +36,10 @@ public class Obstacle {
         }
     }
 
-    public static Image loadImage(ObjectType t){
+    public int x(){return x;}
+    public int y(){return y;}
+
+    private static Image loadImage(ObjectType t){
         Image i;
         switch (t) {
             case WOOD:

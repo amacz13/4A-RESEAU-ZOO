@@ -20,14 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
-    public static GraphicsContext gc;
     public static Zoo zoo;
-    public static int sizeX = 45, sizeY = 45;
+    static int sizeX = 45, sizeY = 45;
 
-    public static void main(String[] args) throws InterruptedException {
-        zoo = new Zoo(sizeX,sizeY);
+    public static void main(String[] args) {
+        zoo = new Zoo(sizeX, sizeY);
         //zoo.move(0);
-
 
 
         Application.launch(args);
@@ -35,26 +33,25 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Canvas canvas = new Canvas(16*sizeX, 16*sizeY);
+        Canvas canvas = new Canvas(16 * sizeX, 16 * sizeY);
 
         // Get the graphics context of the canvas
-        gc = canvas.getGraphicsContext2D();
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         // Load the Image
         String imagePath = "/tiles/grass16.png";
         Image image = new Image(imagePath);
         // Draw the Image
 
-        for (int i = 0; i < sizeX; i++){
+        for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                gc.drawImage(image, i * 16, j*16);
+                gc.drawImage(image, i * 16, j * 16);
             }
         }
 
 
-
         Pane root = new Pane();
         root.getChildren().add(canvas);
-        Scene scene = new Scene(root, 16*sizeX, 16*sizeY);
+        Scene scene = new Scene(root, 16 * sizeX, 16 * sizeY);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Zoo");
         primaryStage.getIcons().add(new Image("/animals/lion.png"));
@@ -69,13 +66,17 @@ public class Main extends Application {
             }
         });
 
-        Obstacle.generateObstacles(zoo,gc);
+        Obstacle.generateObstacles(zoo, gc);
         Coordinates c = Coordinates.generateCoordinate(zoo);
-        zoo.addAnimal(new Lion(c.x,c.y));
+        Coordinates c2 = Coordinates.generateCoordinate(zoo);
+
+        for(int i = 0 ; i<25 ; i++){
+            zoo.addAnimal(new Lion());
+        }
 
         Runner r = new Runner(gc, zoo);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(r, 0, 500, TimeUnit.MILLISECONDS);
+        exec.scheduleAtFixedRate(r, 0, 300, TimeUnit.MILLISECONDS);
 
     }
 }

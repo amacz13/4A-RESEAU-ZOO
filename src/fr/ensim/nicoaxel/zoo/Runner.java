@@ -21,7 +21,7 @@ public class Runner implements Runnable{
 
     @Override
     public void run() {
-        log.info("Temps "+(c++));
+        log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
 
         zoo.action(gc);
     }
