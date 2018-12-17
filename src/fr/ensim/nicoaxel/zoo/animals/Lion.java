@@ -8,16 +8,16 @@ import fr.ensim.nicoaxel.zoo.utils.Coordinates;
 public class Lion extends Animal {
 
     public Lion(){
-        super(Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.LION, 1,5);
+        super(Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.LION, 1,5, 30);
     }
 
     public Lion(int x, int y) {
-        super(x, y, Espece.LION,1, 5 );
+        super(x, y, Espece.LION,1, 5,30 );
     }
     public Lion(int x, int y, char sex) {
-        super(x, y, Espece.LION, sex, 1, 5);
+        super(x, y, Espece.LION, sex, 1, 5, 30);
     }
     public Lion(int x, int y, char sex, int destX, int destY) {
-        super(x, y, Espece.LION, sex, 1,5, destX, destY);
+        super(x, y, Espece.LION, sex, 1,5,30, destX, destY);
     }
 }

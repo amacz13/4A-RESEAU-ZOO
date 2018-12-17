@@ -23,9 +23,11 @@ public abstract class Animal {
     private Espece espece;
     private Image image;
     private int reproductionTime;
+    private int reproductionAge;
+    private int age = 0;
 
 
-    public Animal(int x, int y, Espece esp, int speed, int repro) {
+    public Animal(int x, int y, Espece esp, int speed, int repro, int ageRepro) {
 
         this.x = x;
         this.y = y;
@@ -35,6 +37,7 @@ public abstract class Animal {
         espece = esp;
         this.speed = speed;
         reproductionTime = repro;
+        reproductionAge = ageRepro;
 
         sex = new Random().nextBoolean() ? 'm' : 'f';
         image = setImage(espece);
@@ -42,13 +45,13 @@ public abstract class Animal {
     }
 
 
-    public Animal(int x, int y, Espece esp, char sex, int speed, int repro) {
-        this(x, y, esp, speed, repro);
+    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro) {
+        this(x, y, esp, speed, repro, ageRepro);
         this.sex = sex;
     }
 
-    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int destX, int destY) {
-        this(x, y, esp, sex, speed, repro);
+    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro, int destX, int destY) {
+        this(x, y, esp, sex, speed, repro, ageRepro);
         this.destY = destY;
         this.destX = destX;
     }
@@ -64,6 +67,8 @@ public abstract class Animal {
     }
 
     void action() {
+        age++;
+
         if (immobile > 0) {
             immobile--;
         } else if (immobile < 0) {
@@ -74,7 +79,7 @@ public abstract class Animal {
             if (Math.random() * 100 < LIMIT) {
                 this.choiceDest();
             }
-        } else if (immobile == 0) {
+        } else if (immobile == 0 && age >reproductionAge) {
             immobile--;
             choiceDest();
             countSpeed = 0;
@@ -122,7 +127,7 @@ public abstract class Animal {
                 move();
             }
 
-            if (espece.equals(Main.zoo.hasAnimal(this))) {
+            if (age > reproductionAge && espece.equals(Main.zoo.hasAnimal(this))) {
                 immobile = reproductionTime;
                 log.info("Coupling start");
             }
