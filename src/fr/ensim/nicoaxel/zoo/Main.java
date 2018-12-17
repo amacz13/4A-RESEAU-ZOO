@@ -17,6 +17,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.concurrent.Executors;
@@ -25,6 +27,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
+
+    private static final Logger log = LogManager.getRootLogger();
 
     public static Zoo zoo;
     public static int sizeX = 56, sizeY = 56;
@@ -93,7 +97,7 @@ public class Main extends Application {
         }
 
         Runner r = new Runner(gc, zoo);
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService exec = Executors.newScheduledThreadPool(500);
         exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
 
     }
