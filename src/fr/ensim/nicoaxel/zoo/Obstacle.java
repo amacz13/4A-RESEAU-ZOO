@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Obstacle {
     private static final Logger log = LogManager.getRootLogger();
 
-    public static final int NB_OBJECTS = 50;
+    public static final int NB_OBJECTS = 150;
 
     public ObjectType type;
     private int x, y;
@@ -58,21 +58,20 @@ public class Obstacle {
                 case 1:
                 case 2:
                 case 3:
-                    log.info("Generated Stone at x:"+c.x+" y:"+c.y);
+                    log.debug("Generated Stone at x:"+c.x+" y:"+c.y);
                     zoo.addObstacle(new Obstacle(ObjectType.STONE,c.x,c.y,gc));
                     break;
                 case 4:
                 case 5:
-                    log.info("Generated Lake at x:"+c.x+" y:"+c.y);
+                    log.debug("Generated Lake at x:"+c.x+" y:"+c.y);
                     generateLake(gc,c.x,c.y,zoo);
-                    //zoo.addObstacle(new Obstacle(ObjectType.WATER,c.x,c.y,gc));
                     break;
                 case 6:
                 case 7:
                 case 8:
                 case 9:
                 case 10:
-                    log.info("Generated Wood at x:"+c.x+" y:"+c.y);
+                    log.debug("Generated Wood at x:"+c.x+" y:"+c.y);
                     zoo.addObstacle(new Obstacle(ObjectType.WOOD,c.x,c.y,gc));
                     break;
             }

@@ -68,7 +68,7 @@ public abstract class Animal {
 
     void action() {
         age++;
-        log.info("Animal grew up !");
+        log.debug("Animal grew up !");
         if (immobile > 0) {
             immobile--;
         } else if (immobile < 0) {
@@ -87,14 +87,14 @@ public abstract class Animal {
             if (espece.equals(Main.zoo.hasAnimal(this))) {
                 Main.zoo.generateBaby(x, y, espece);
             } else {
-                log.info("Coupling without baby");
+                log.debug("Coupling without baby");
             }
         }
 
     }
 
     public void move() {
-        log.info("Animal starting moving !");
+        log.debug("Animal starting moving !");
         if (countSpeed > 0) {
             countSpeed--;
         }
@@ -124,9 +124,9 @@ public abstract class Animal {
             }
 
 
-            log.info("Obstacle ? ");
+            log.debug("Obstacle ? ");
             if (Main.zoo.hasObstacle(x, y)) {
-                log.info("Obstacle detected !");
+                log.debug("Obstacle detected !");
                 x = oldx;
                 y = oldy;
                 choiceDest();
@@ -134,13 +134,13 @@ public abstract class Animal {
                 //move();
             }
 
-            log.info("Girlfriend ?");
+            log.debug("Girlfriend ?");
             if (age > reproductionAge && espece.equals(Main.zoo.hasAnimal(this))) {
                 immobile = reproductionTime;
-                log.info("Coupling start");
+                log.debug("Coupling start");
             }
         }
-        log.info("x : " + x + " / y : " + y);
+        log.debug("x : " + x + " / y : " + y);
     }
 
     private Image setImage(Espece esp) {

@@ -59,19 +59,19 @@ public final class Zoo {
 
     public void move() {
         for (int i = 0; i < animals.size(); i++) {
-            log.info("Moving animal "+i);
+            log.debug("Moving animal "+i);
             animals.get(i).action();
         }
     }
 
     public void render(GraphicsContext gc) {
         for (Animal a : animals) {
-            log.info("Rendering animal "+a.getEspece().toString());
+            log.debug("Rendering animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
     }
 
-    public void action(GraphicsContext gc) throws InterruptedException {
+    public void action(GraphicsContext gc) {
         this.move();
         this.render(gc);
     }
@@ -83,7 +83,7 @@ public final class Zoo {
             }
         }
 
-        log.info("Bébé créé");
+        log.debug("Bébé créé");
         Animal a;
         switch (esp) {
             case LION:
