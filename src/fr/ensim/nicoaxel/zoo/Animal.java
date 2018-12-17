@@ -134,6 +134,12 @@ public abstract class Animal {
         switch (esp) {
             case LION:
                 return new Image("/animals/lion.png");
+            case ZEBRA:
+                return new Image("/animals/zebra.png");
+            case ELEPHANT:
+                return new Image("/animals/elephant.png");
+            case FOX:
+                return new Image("/animals/fox.png");
             default:
                 return new Image("/unknown.png");
         }

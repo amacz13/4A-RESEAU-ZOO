@@ -1,7 +1,11 @@
 package fr.ensim.nicoaxel.zoo;
 
 
+import fr.ensim.nicoaxel.zoo.animals.Elephant;
+import fr.ensim.nicoaxel.zoo.animals.Fox;
 import fr.ensim.nicoaxel.zoo.animals.Lion;
+import fr.ensim.nicoaxel.zoo.animals.Zebra;
+import fr.ensim.nicoaxel.zoo.types.ObjectType;
 import fr.ensim.nicoaxel.zoo.utils.Coordinates;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,6 +20,7 @@ import javafx.stage.WindowEvent;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
@@ -71,7 +76,21 @@ public class Main extends Application {
         Coordinates c2 = Coordinates.generateCoordinate(zoo);
 
         for(int i = 0 ; i<25 ; i++){
-            zoo.addAnimal(new Lion());
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+            switch (randomNum) {
+                case 0:
+                    zoo.addAnimal(new Lion());
+                    break;
+                case 1:
+                    zoo.addAnimal(new Zebra());
+                    break;
+                case 2:
+                    zoo.addAnimal(new Fox());
+                    break;
+                case 3:
+                    zoo.addAnimal(new Elephant());
+                    break;
+            }
         }
 
         Runner r = new Runner(gc, zoo);
