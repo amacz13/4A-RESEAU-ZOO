@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.awt.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,13 +27,9 @@ import java.util.concurrent.TimeUnit;
 public class Main extends Application {
 
     public static Zoo zoo;
-    static int sizeX = 45, sizeY = 45;
+    public static int sizeX = 56, sizeY = 56;
 
     public static void main(String[] args) {
-        zoo = new Zoo(sizeX, sizeY);
-        //zoo.move(0);
-
-
         Application.launch(args);
     }
 
@@ -43,7 +40,7 @@ public class Main extends Application {
         // Get the graphics context of the canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // Load the Image
-        String imagePath = "/tiles/grass16.png";
+        String imagePath = "/tiles/grass.png";
         Image image = new Image(imagePath);
         // Draw the Image
 
@@ -56,7 +53,7 @@ public class Main extends Application {
 
         Pane root = new Pane();
         root.getChildren().add(canvas);
-        Scene scene = new Scene(root, 16 * sizeX, 16 * sizeY);
+        Scene scene = new Scene(root, (16) * sizeX - 10, (16) * sizeY -10);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Zoo");
         primaryStage.getIcons().add(new Image("/animals/lion.png"));
@@ -71,11 +68,13 @@ public class Main extends Application {
             }
         });
 
+        zoo = new Zoo(sizeX, sizeY);
+
         Obstacle.generateObstacles(zoo, gc);
         Coordinates c = Coordinates.generateCoordinate(zoo);
         Coordinates c2 = Coordinates.generateCoordinate(zoo);
 
-        for(int i = 0 ; i<25 ; i++){
+        for(int i = 0 ; i<45 ; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             switch (randomNum) {
                 case 0:
@@ -95,7 +94,7 @@ public class Main extends Application {
 
         Runner r = new Runner(gc, zoo);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(r, 0, 300, TimeUnit.MILLISECONDS);
+        exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
 
     }
 }

@@ -20,8 +20,8 @@ public final class Zoo {
     private int sizeX, sizeY;
 
     public Zoo(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+        this.sizeX = Main.sizeX;
+        this.sizeY = Main.sizeY;
         animals = new ArrayList<>();
         babies = new ArrayList<>();
         obstacles = new ArrayList<>();

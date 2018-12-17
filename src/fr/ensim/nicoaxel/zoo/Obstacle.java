@@ -3,6 +3,7 @@ package fr.ensim.nicoaxel.zoo;
 import fr.ensim.nicoaxel.zoo.types.ObjectType;
 import fr.ensim.nicoaxel.zoo.utils.Coordinates;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,14 +13,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Obstacle {
     private static final Logger log = LogManager.getRootLogger();
 
-    public static final int NB_OBJECTS = 60;
+    public static final int NB_OBJECTS = 150;
 
     public ObjectType type;
     private int x, y;
     public Image img;
 
     public static void generateLake(GraphicsContext gc, int x, int y, Zoo zoo){
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 16; i++) {
             int randomNum = ThreadLocalRandom.current().nextInt(0, 5 + 1);
             switch (randomNum) {
                 case 0:
@@ -50,19 +51,27 @@ public class Obstacle {
     public static void generateObstacles(Zoo zoo,GraphicsContext gc){
 
         for (int i = 0; i < NB_OBJECTS; i++) {
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 10 + 1);
             Coordinates c = Coordinates.generateCoordinate(zoo);
             switch (randomNum) {
                 case 0:
+                case 1:
+                case 2:
+                case 3:
                     log.info("Generated Stone at x:"+c.x+" y:"+c.y);
                     zoo.addObstacle(new Obstacle(ObjectType.STONE,c.x,c.y,gc));
                     break;
-                case 1:
+                case 4:
+                case 5:
                     log.info("Generated Lake at x:"+c.x+" y:"+c.y);
                     generateLake(gc,c.x,c.y,zoo);
                     //zoo.addObstacle(new Obstacle(ObjectType.WATER,c.x,c.y,gc));
                     break;
-                case 2:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
                     log.info("Generated Wood at x:"+c.x+" y:"+c.y);
                     zoo.addObstacle(new Obstacle(ObjectType.WOOD,c.x,c.y,gc));
                     break;

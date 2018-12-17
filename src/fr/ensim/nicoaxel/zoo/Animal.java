@@ -163,7 +163,7 @@ public abstract class Animal {
 
 
     void renderAnimal(GraphicsContext gc) {
-        Image grass = new Image("/tiles/grass16.png");
+        Image grass = new Image("/tiles/grass.png");
         gc.drawImage(grass, oldx * 16, oldy * 16);
         gc.drawImage(image, x * 16, y * 16);
     }
