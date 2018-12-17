@@ -58,9 +58,6 @@ public final class Zoo {
         for (int i = 0; i < animals.size(); i++) {
             animals.get(i).action();
         }
-        /*for(Animal a : animals){
-            a.action();
-        }*/
     }
 
     public void render(GraphicsContext gc) {
@@ -75,16 +72,6 @@ public final class Zoo {
     }
 
     public void generateBaby(int x, int y, Espece esp) {
-       /* Animal a = null;
-        switch (esp){
-            case LION:
-                a = new Lion(x, y);
-                break;
-            default :
-                break;
-        }
-        addAnimal(a);*/
-
         for (Animal a : babies) {
             if (a.x() == x && a.y() == y) {
                 return;
