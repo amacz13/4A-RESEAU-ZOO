@@ -13,7 +13,7 @@ public class Runner implements Runnable{
     private GraphicsContext gc;
     private Zoo zoo;
 
-    Runner(GraphicsContext g, Zoo z) {
+    public Runner(GraphicsContext g, Zoo z) {
         zoo = z;
         gc = g;
     }
