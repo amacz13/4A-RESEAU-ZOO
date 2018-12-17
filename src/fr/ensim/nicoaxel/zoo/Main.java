@@ -38,7 +38,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws InterruptedException {
+    public void start(Stage primaryStage) {
         Canvas canvas = new Canvas(16 * sizeX, 16 * sizeY);
 
         // Get the graphics context of the canvas
@@ -57,7 +57,7 @@ public class Main extends Application {
 
         Pane root = new Pane();
         root.getChildren().add(canvas);
-        Scene scene = new Scene(root, (16) * sizeX - 10, (16) * sizeY -10);
+        Scene scene = new Scene(root, (16) * sizeX, (16) * sizeY);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Zoo");
         primaryStage.getIcons().add(new Image("/animals/lion.png"));
@@ -81,22 +81,28 @@ public class Main extends Application {
             switch (randomNum) {
                 case 0:
                     zoo.addAnimal(new Lion());
+                    log.info("Creating Lion #"+i);
                     break;
                 case 1:
                     zoo.addAnimal(new Zebra());
+                    log.info("Creating Zebra #"+i);
                     break;
                 case 2:
                     zoo.addAnimal(new Fox());
+                    log.info("Creating Fox #"+i);
                     break;
                 case 3:
                     zoo.addAnimal(new Elephant());
+                    log.info("Creating Elephant #"+i);
                     break;
             }
         }
         log.info("Starting runner...");
         Runner r = new Runner(gc, zoo);
+        //Renderer rend = new Renderer(gc,zoo);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
+        //exec.scheduleAtFixedRate(rend, 100, 50, TimeUnit.MILLISECONDS);
 
     }
 }

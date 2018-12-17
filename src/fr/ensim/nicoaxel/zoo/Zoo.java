@@ -1,6 +1,9 @@
 package fr.ensim.nicoaxel.zoo;
 
+import fr.ensim.nicoaxel.zoo.animals.Elephant;
+import fr.ensim.nicoaxel.zoo.animals.Fox;
 import fr.ensim.nicoaxel.zoo.animals.Lion;
+import fr.ensim.nicoaxel.zoo.animals.Zebra;
 import fr.ensim.nicoaxel.zoo.types.Espece;
 import javafx.scene.canvas.GraphicsContext;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +17,7 @@ import static fr.ensim.nicoaxel.zoo.types.Espece.*;
 public final class Zoo {
     private static final Logger log = LogManager.getRootLogger();
 
-    private List<Animal> animals;
+    public List<Animal> animals;
     private List<Animal> babies;
     private List<Obstacle> obstacles;
     private int sizeX, sizeY;
@@ -56,17 +59,19 @@ public final class Zoo {
 
     public void move() {
         for (int i = 0; i < animals.size(); i++) {
+            log.info("Moving animal "+i);
             animals.get(i).action();
         }
     }
 
     public void render(GraphicsContext gc) {
         for (Animal a : animals) {
+            log.info("Rendering animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
     }
 
-    public void action(GraphicsContext gc) {
+    public void action(GraphicsContext gc) throws InterruptedException {
         this.move();
         this.render(gc);
     }
@@ -79,7 +84,24 @@ public final class Zoo {
         }
 
         log.info("Bébé créé");
-        Animal a = new Lion(x, y);
+        Animal a;
+        switch (esp) {
+            case LION:
+                a = new Lion(x, y);
+                break;
+            case ELEPHANT:
+                a = new Elephant(x,y);
+                break;
+            case FOX:
+                a = new Fox(x,y);
+                break;
+            case ZEBRA:
+                a = new Zebra(x,y);
+                break;
+            default:
+                a = new Fox(x,y);
+                break;
+        }
         this.addAnimal(a);
         babies.add(a);
     }

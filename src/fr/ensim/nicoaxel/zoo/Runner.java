@@ -23,6 +23,10 @@ public class Runner implements Runnable{
     public void run() {
         log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
 
-        zoo.action(gc);
+        try {
+            zoo.action(gc);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
