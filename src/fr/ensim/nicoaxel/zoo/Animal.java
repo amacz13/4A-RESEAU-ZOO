@@ -79,7 +79,7 @@ public abstract class Animal {
             if (Math.random() * 100 < LIMIT) {
                 this.choiceDest();
             }
-        } else if (immobile == 0 && age >reproductionAge) {
+        } else if (immobile == 0 && age > reproductionAge) {
             immobile--;
             choiceDest();
             countSpeed = 0;
@@ -103,21 +103,25 @@ public abstract class Animal {
             int difX = x - destX;
             int difY = y - destY;
 
-            if (difX < 0) {
-                x++;
-            } else if (difX > 0) {
-                x--;
-            } else if (difX == 0) {
-                log.debug("Arrived in en X");
+            if (difX > difY) {
+
+                if (difX < 0) {
+                    x++;
+                } else if (difX > 0) {
+                    x--;
+                } else if (difX == 0) {
+                    log.debug("Arrived in en X");
+                }
+            } else {
+                if (difY < 0) {
+                    y++;
+                } else if (difY > 0) {
+                    y--;
+                } else if (difY == 0) {
+                    log.debug("Arrived in Y");
+                }
             }
 
-            if (difY < 0) {
-                y++;
-            } else if (difY > 0) {
-                y--;
-            } else if (difY == 0) {
-                log.debug("Arrived in Y");
-            }
 
             if (Main.zoo.hasObstacle(x, y)) {
                 x = oldx;
