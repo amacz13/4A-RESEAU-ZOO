@@ -76,7 +76,7 @@ public class Main extends Application {
 
         Obstacle.generateObstacles(zoo, gc);
 
-        for(int i = 0 ; i<25 ; i++){
+        for(int i = 0 ; i<45 ; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             switch (randomNum) {
                 case 0:
