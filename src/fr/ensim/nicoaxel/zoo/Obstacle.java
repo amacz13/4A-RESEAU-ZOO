@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Obstacle {
     private static final Logger log = LogManager.getRootLogger();
 
-    public static final int NB_OBJECTS = 150;
+    public static final int NB_OBJECTS = 50;
 
     public ObjectType type;
     private int x, y;

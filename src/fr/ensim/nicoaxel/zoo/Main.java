@@ -31,14 +31,14 @@ public class Main extends Application {
     private static final Logger log = LogManager.getRootLogger();
 
     public static Zoo zoo;
-    public static int sizeX = 56, sizeY = 56;
+    public static int sizeX = 40, sizeY = 40;
 
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InterruptedException {
         Canvas canvas = new Canvas(16 * sizeX, 16 * sizeY);
 
         // Get the graphics context of the canvas
@@ -75,10 +75,8 @@ public class Main extends Application {
         zoo = new Zoo(sizeX, sizeY);
 
         Obstacle.generateObstacles(zoo, gc);
-        Coordinates c = Coordinates.generateCoordinate(zoo);
-        Coordinates c2 = Coordinates.generateCoordinate(zoo);
 
-        for(int i = 0 ; i<45 ; i++){
+        for(int i = 0 ; i<25 ; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             switch (randomNum) {
                 case 0:
@@ -95,9 +93,9 @@ public class Main extends Application {
                     break;
             }
         }
-
+        log.info("Starting runner...");
         Runner r = new Runner(gc, zoo);
-        ScheduledExecutorService exec = Executors.newScheduledThreadPool(500);
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(r, 0, 100, TimeUnit.MILLISECONDS);
 
     }
