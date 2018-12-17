@@ -12,11 +12,15 @@ public class Main {
     private static final Logger log = LogManager.getRootLogger();
 
     public static void main(String args[]) throws IOException {
-        ServerSocket ss = new ServerSocket(80);
+        ServerSocket ss = new ServerSocket(4321);
         log.info("Starting server...");
-        log.info("Listening on port : 80");
-        Socket s = ss.accept();
-        log.info("New connection from "+s.getInetAddress()+":"+s.getPort());
+        log.info("Listening on port : 4321");
+        do {
+            Socket s = ss.accept();
+            log.info("New connection from "+s.getInetAddress()+":"+s.getPort());
+            Thread t = new Thread(new Service(s));
+            t.start();
+        } while (true);
     }
 
 }
