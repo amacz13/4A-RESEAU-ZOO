@@ -21,21 +21,23 @@ class Service implements Runnable {
             Thread.sleep(500);
 
             String msg = "";
-            PrintWriter pw;
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
+
+            pw.println(Main.zoo.toSend());
+
+            for(Obstacle o : Main.zoo.getObstacles()){
+                pw.println(o.toSend());
+            }
+
+            pw.println("STOP");
+            pw.flush();
+
+
             do{
-                pw = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
-                pw.println(qui + " : "+ msg);
 
-                pw.println(Main.zoo.toSend());
-                pw.flush();
-
-                for(Obstacle o : Main.zoo.getObstacles()){
-
-                    pw.println(o.toSend());
-                    pw.flush();
-                }
 
             }while (!msg.equals("STOP"));
+
             pw.close();
             bf.close();
             maSocket.close();
