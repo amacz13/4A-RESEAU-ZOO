@@ -23,9 +23,18 @@ class Service implements Runnable {
             String msg = "";
             PrintWriter pw;
             do{
-
                 pw = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
                 pw.println(qui + " : "+ msg);
+
+                pw.println("[Zoo]"+Main.sizeX+" "+Main.sizeY);
+                pw.flush();
+
+                for(Obstacle o : Main.zoo.getObstacles()){
+
+                    pw.println(o.toSend());
+                    pw.flush();
+                }
+
             }while (!msg.equals("STOP"));
             pw.close();
             bf.close();
