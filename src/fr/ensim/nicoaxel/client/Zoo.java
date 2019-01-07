@@ -1,8 +1,5 @@
 package fr.ensim.nicoaxel.client;
 
-import fr.ensim.nicoaxel.client.Animal;
-import fr.ensim.nicoaxel.client.Main;
-import fr.ensim.nicoaxel.client.Obstacle;
 import fr.ensim.nicoaxel.client.animals.Elephant;
 import fr.ensim.nicoaxel.client.animals.Fox;
 import fr.ensim.nicoaxel.client.animals.Lion;
