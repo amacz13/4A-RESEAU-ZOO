@@ -17,6 +17,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Main extends Application {
+
+    public static Zoo zoo;
     public static int sizeX = 40, sizeY = 40;
 
     public static void main(String args[]) throws IOException {
