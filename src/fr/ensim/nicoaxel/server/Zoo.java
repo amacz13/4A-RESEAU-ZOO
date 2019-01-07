@@ -110,4 +110,8 @@ public final class Zoo {
         babies.add(a);
     }
 
+    public String toSend(){
+        return "[Zoo]"+sizeX+" "+sizeY;
+    }
+
 }
