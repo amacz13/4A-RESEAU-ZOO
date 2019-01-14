@@ -8,7 +8,8 @@ import fr.ensim.nicoaxel.server.Coordinates;
 public class Zebra extends Animal {
 
     public Zebra(){
-        super("", Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.ZEBRA, 1,5,20);
+        super();
+        //super("", Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.ZEBRA, 1,5,20);
     }
 
     public Zebra(String id, int x, int y) {

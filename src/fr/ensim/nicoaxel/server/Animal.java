@@ -179,6 +179,21 @@ public abstract class Animal {
         return !(a.getSex() == sex);
     }
 
+    public Animal(){
+        super();
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setEspece(Espece espece) {
+        this.espece = espece;
+    }
 
     void renderAnimal(GraphicsContext gc) {
         Image grass = new Image("/tiles/grass.png");
@@ -188,7 +203,7 @@ public abstract class Animal {
 
 
    public String toSend(){
-       return "[Animal]"+espece+" "+x+" "+y;
+       return "[Animal] "+espece+" "+x+" "+y;
    }
 
 }

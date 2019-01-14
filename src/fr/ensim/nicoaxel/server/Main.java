@@ -1,12 +1,12 @@
 package fr.ensim.nicoaxel.server;
 
-import fr.ensim.nicoaxel.server.Zoo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -14,6 +14,8 @@ public class Main {
     public static Zoo zoo;
 
     public static int sizeX = 45, sizeY = 45;
+
+    private static ArrayList<UserAnimals> listUserAnimal = new ArrayList<UserAnimals>();
 
     public static void main(String args[]) throws IOException {
 
@@ -32,4 +34,28 @@ public class Main {
         } while (true);
     }
 
+
+    public static ArrayList<Animal> getlistAnimals(String user){
+        ArrayList<Animal> list = new ArrayList<>();
+        for(UserAnimals ua : listUserAnimal){
+            if(!ua.user.equals(user)){
+                list.addAll(ua.animals);
+            }
+        }
+        return list;
+    }
+
+    public static void addListAnimals(UserAnimals ua){
+        listUserAnimal.add(ua);
+    }
+/*
+    public UserAnimals getListAnimals(String user){
+        for(UserAnimals ua : listUserAnimal) {
+            if (ua.user.equals(user)) {
+                return ua;
+            }
+        }
+        return null;
+    }
+*/
 }
