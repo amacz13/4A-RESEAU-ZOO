@@ -8,16 +8,16 @@ import fr.ensim.nicoaxel.server.Coordinates;
 public class Fox extends Animal {
 
     public Fox(){
-        super(Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.FOX, 1,5,5);
+        super("", Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.FOX, 1,5,5);
     }
 
-    public Fox(int x, int y) {
-        super(x, y, Espece.FOX,1, 5,5 );
+    public Fox(String id, int x, int y) {
+        super(id, x, y, Espece.FOX,1, 5,5 );
     }
-    public Fox(int x, int y, char sex) {
-        super(x, y, Espece.FOX, sex, 1, 5,5);
+    public Fox(String id, int x, int y, char sex) {
+        super(id, x, y, Espece.FOX, sex, 1, 5,5);
     }
-    public Fox(int x, int y, char sex, int destX, int destY) {
-        super(x, y, Espece.FOX, sex, 1,5,5, destX, destY);
+    public Fox(String id, int x, int y, char sex, int destX, int destY) {
+        super(id, x, y, Espece.FOX, sex, 1,5,5, destX, destY);
     }
 }

@@ -16,12 +16,19 @@ class Service implements Runnable {
     public void run() {
         try {
             BufferedReader bf = new BufferedReader(new InputStreamReader(maSocket.getInputStream()));
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
+
             String qui = bf.readLine();
-            System.out.println(qui + " : vient de se connecter");
+
+            if(qui.equals("Axel")){
+                System.out.println(qui + " vient manger");
+            }else{
+                System.out.println(qui + " : vient de se connecter");
+            }
+
             Thread.sleep(500);
 
             String msg = "";
-            PrintWriter pw = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
 
             pw.println(Main.zoo.toSend());
 
@@ -34,10 +41,17 @@ class Service implements Runnable {
 
 
             do{
+                pw.println("\uD83D\uDD95");
+                pw.flush();
+                /*System.out.println("Nouveau tour !");
 
-
+                for(Animal a : Main.zoo.animals){
+                    pw.println(a.toSend());
+                }*/
+                msg = bf.readLine();
+                System.out.println(msg);
             }while (!msg.equals("STOP"));
-
+            System.out.println(qui+" est partit manger");
             pw.close();
             bf.close();
             maSocket.close();

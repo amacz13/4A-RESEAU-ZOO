@@ -91,19 +91,19 @@ public final class Zoo {
         Animal a;
         switch (esp) {
             case LION:
-                a = new Lion(x, y);
+                a = new Lion("", x, y);
                 break;
             case ELEPHANT:
-                a = new Elephant(x,y);
+                a = new Elephant("", x,y);
                 break;
             case FOX:
-                a = new Fox(x,y);
+                a = new Fox("", x,y);
                 break;
             case ZEBRA:
-                a = new Zebra(x,y);
+                a = new Zebra("", x,y);
                 break;
             default:
-                a = new Fox(x,y);
+                a = new Fox("", x,y);
                 break;
         }
         this.addAnimal(a);

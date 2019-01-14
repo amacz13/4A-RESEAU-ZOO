@@ -13,7 +13,7 @@ public class Main {
     private static final Logger log = LogManager.getRootLogger();
     public static Zoo zoo;
 
-    public static int sizeX = 40, sizeY = 40;
+    public static int sizeX = 45, sizeY = 45;
 
     public static void main(String args[]) throws IOException {
 
@@ -26,6 +26,7 @@ public class Main {
         do {
             Socket s = ss.accept();
             log.info("New connection from "+s.getInetAddress()+":"+s.getPort());
+
             Thread t = new Thread(new Service(s));
             t.start();
         } while (true);

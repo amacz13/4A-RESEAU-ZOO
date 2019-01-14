@@ -14,6 +14,8 @@ public abstract class Animal {
     private static final Logger log = LogManager.getRootLogger();
     private static final double LIMIT = 8;
 
+    private String id = "";
+
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
     private int immobile = -1;
@@ -28,7 +30,9 @@ public abstract class Animal {
     private int age = 0;
 
 
-    public Animal(int x, int y, Espece esp, int speed, int repro, int ageRepro) {
+    public Animal(String id, int x, int y, Espece esp, int speed, int repro, int ageRepro) {
+
+        this.id = id;
 
         this.x = x;
         this.y = y;
@@ -46,13 +50,13 @@ public abstract class Animal {
     }
 
 
-    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro) {
-        this(x, y, esp, speed, repro, ageRepro);
+    public Animal(String id, int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro) {
+        this(id, x, y, esp, speed, repro, ageRepro);
         this.sex = sex;
     }
 
-    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro, int destX, int destY) {
-        this(x, y, esp, sex, speed, repro, ageRepro);
+    public Animal(String id, int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro, int destX, int destY) {
+        this(id, x, y, esp, sex, speed, repro, ageRepro);
         this.destY = destY;
         this.destX = destX;
     }
@@ -181,5 +185,10 @@ public abstract class Animal {
         gc.drawImage(grass, oldx * 16, oldy * 16);
         gc.drawImage(image, x * 16, y * 16);
     }
+
+
+   public String toSend(){
+       return "[Animal]"+espece+" "+x+" "+y;
+   }
 
 }
