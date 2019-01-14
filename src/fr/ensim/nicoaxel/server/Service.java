@@ -88,8 +88,6 @@ class Service implements Runnable {
                 }
 
                 if(msg.equals("STOPANIMALS")){
-                    pw.println("STARTANIMALSOTHER");
-                    pw.flush();
                     for (Animal a : Main.getlistAnimals(qui)) {
                         pw.println(a.toSend());
                         pw.flush();
