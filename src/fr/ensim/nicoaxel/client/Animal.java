@@ -183,7 +183,7 @@ public abstract class Animal {
     }
 
     public String toSend(){
-        return "[Animal]"+espece+" "+x+" "+y;
+        return "[Animal] "+espece+" "+x+" "+y;
     }
 
 }

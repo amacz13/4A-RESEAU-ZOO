@@ -17,6 +17,7 @@ public final class Zoo {
 
     public List<Animal> animals;
     private List<Animal> babies;
+    public List<Animal> otherAnimals;
     private List<Obstacle> obstacles;
     private int sizeX, sizeY;
 
@@ -26,6 +27,7 @@ public final class Zoo {
         animals = new ArrayList<>();
         babies = new ArrayList<>();
         obstacles = new ArrayList<>();
+        otherAnimals = new ArrayList<>();
     }
 
     public int nbAnimal(){
@@ -75,7 +77,14 @@ public final class Zoo {
             log.debug("Rendering animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
-        for (Obstacle o : obstacles) o.renderObject(gc);
+        renderOther(gc);
+    }
+
+    public void renderOther(GraphicsContext gc) {
+        for (Animal a : otherAnimals) {
+            log.debug("Rendering other animal "+a.getEspece().toString());
+            a.renderAnimal(gc);
+        }
     }
 
     public void action(GraphicsContext gc) {

@@ -94,6 +94,8 @@ public class Main extends Application {
                 try {
                     pw.write("STOP");
                     pw.flush();
+                    pw.close();
+                    bf.close();
                     service.close();
                     log.info("Socket Closed");
                 } catch (IOException e) {
@@ -132,12 +134,15 @@ public class Main extends Application {
             log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
         }
 
+        pw.write("STARTANIMALS");
+        pw.flush();
         for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
             pw.write(zoo.getAnimals().get(i).toSend());
             pw.flush();
         }
 
         pw.write("STOPANIMALS");
+        pw.flush();
 
         Timeline runner = new Timeline(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
             int c = 0;
@@ -145,15 +150,18 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
+                pw.write("STARTANIMALS");
+                pw.flush();
                 for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
+                    log.info(zoo.getAnimals().get(i).toSend());
                     pw.write(zoo.getAnimals().get(i).toSend());
                     pw.flush();
                 }
                 pw.write("STOPANIMALS");
+                pw.flush();
             }
         }));
         runner.setCycleCount(Timeline.INDEFINITE);
         runner.play();
-
     }
 }
