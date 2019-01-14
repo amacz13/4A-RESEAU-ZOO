@@ -1,5 +1,11 @@
 package fr.ensim.nicoaxel.server;
 
+import fr.ensim.nicoaxel.client.types.ObjectType;
+import fr.ensim.nicoaxel.server.animals.Elephant;
+import fr.ensim.nicoaxel.server.animals.Fox;
+import fr.ensim.nicoaxel.server.animals.Lion;
+import fr.ensim.nicoaxel.server.animals.Zebra;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -39,17 +45,43 @@ class Service implements Runnable {
             pw.println("STOP");
             pw.flush();
 
+            UserAnimals ua = new UserAnimals(qui);
+            Main.addListAnimals(ua);
 
             do{
-                pw.println("\uD83D\uDD95");
-                pw.flush();
-                /*System.out.println("Nouveau tour !");
-
-                for(Animal a : Main.zoo.animals){
-                    pw.println(a.toSend());
-                }*/
+                System.out.println("#DEBUT TOUR");
                 msg = bf.readLine();
-                System.out.println(msg);
+                System.out.println("Received : "+msg);
+                if(msg.equals("STOP")) {
+                    if (msg.equals("STARTANIMALS")) {
+                        ua.clear();
+                    }
+                    while (!msg.equals("STOPANIMALS")) {
+                        Animal a = new Lion();
+                        switch (msg.split(" ")[1]) {
+                            case "LION":
+                                a = new Lion();
+                                break;
+                            case "ZEBRA":
+                                a = new Zebra();
+                                break;
+                            case "ELEPHANT":
+                                a = new Elephant();
+                                break;
+                            case "FOX":
+                                a = new Fox();
+                                break;
+                        }
+                        a.setX(Integer.parseInt(msg.split(" ")[2]));
+                        a.setY(Integer.parseInt(msg.split(" ")[3]));
+                        ua.addAnimal(a);
+                    }
+                    for (Animal a : Main.getlistAnimals(qui)) {
+                        pw.println(a.toSend());
+                    }
+                }
+                System.out.println("#FIN TOUR");
+
             }while (!msg.equals("STOP"));
             System.out.println(qui+" est partit manger");
             pw.close();
@@ -58,7 +90,7 @@ class Service implements Runnable {
         } catch (Exception e) {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
-            System.exit(1);
+            System.out.println("IL EST PARTI COMME UN JOHNATION");
         }
     }
 }
