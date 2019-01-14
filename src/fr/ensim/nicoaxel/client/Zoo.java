@@ -51,6 +51,10 @@ public final class Zoo {
         return obstacles;
     }
 
+    public List<Animal> getAnimals() {
+        return animals;
+    }
+
     public Espece hasAnimal(Animal animal) {
         for (Animal a : animals) {
             if (a.x() == animal.x() && a.y() == animal.y() && !animal.equals(a) && a.sexDifferent(animal)) return a.getEspece();

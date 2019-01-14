@@ -132,12 +132,24 @@ public class Main extends Application {
             log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
         }
 
+        for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
+            pw.write(zoo.getAnimals().get(i).toSend());
+            pw.flush();
+        }
+
+        pw.write("STOPANIMALS");
+
         Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
+                for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
+                    pw.write(zoo.getAnimals().get(i).toSend());
+                    pw.flush();
+                }
+                pw.write("STOPANIMALS");
             }
         }));
         runner.setCycleCount(Timeline.INDEFINITE);

@@ -182,4 +182,8 @@ public abstract class Animal {
         gc.drawImage(image, x * 16, y * 16);
     }
 
+    public String toSend(){
+        return "[Animal]"+espece+" "+x+" "+y;
+    }
+
 }
