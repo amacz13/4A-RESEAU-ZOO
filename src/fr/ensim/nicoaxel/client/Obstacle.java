@@ -82,6 +82,7 @@ public class Obstacle {
     public int y(){return y;}
 
     private static Image loadImage(ObjectType t){
+        log.info("Loading picture for : "+t.toString());
         Image i;
         switch (t) {
             case WOOD:

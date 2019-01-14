@@ -47,6 +47,10 @@ public final class Zoo {
         return false;
     }
 
+    public List<Obstacle> getObstacles() {
+        return obstacles;
+    }
+
     public Espece hasAnimal(Animal animal) {
         for (Animal a : animals) {
             if (a.x() == animal.x() && a.y() == animal.y() && !animal.equals(a) && a.sexDifferent(animal)) return a.getEspece();
@@ -67,6 +71,7 @@ public final class Zoo {
             log.debug("Rendering animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
+        for (Obstacle o : obstacles) o.renderObject(gc);
     }
 
     public void action(GraphicsContext gc) {
