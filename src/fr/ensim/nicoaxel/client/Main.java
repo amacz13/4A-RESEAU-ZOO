@@ -4,6 +4,7 @@ import fr.ensim.nicoaxel.client.animals.Elephant;
 import fr.ensim.nicoaxel.client.animals.Fox;
 import fr.ensim.nicoaxel.client.animals.Lion;
 import fr.ensim.nicoaxel.client.animals.Zebra;
+import fr.ensim.nicoaxel.client.types.ObjectType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -33,41 +34,42 @@ public class Main extends Application {
     public static int sizeX = 40, sizeY = 40;
     public static Socket service;
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
+
+        Application.launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+
+        //Network data reception
         service = new Socket("192.168.43.19", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
         pw.println("Axel");
         pw.flush();
         String line = "";
+        line = bf.readLine();
+        String header = line.split("]")[0];
+        String content = line.split("]")[1];
+        sizeX = Integer.parseInt(content.split(" ")[0]);
+        sizeY = Integer.parseInt(content.split(" ")[1]);
+        zoo = new Zoo(sizeX, sizeY);
+        Canvas canvas = new Canvas(16 * sizeX, 16 * sizeY);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         do {
             line = bf.readLine();
             try {
-                String header = line.split("]")[0];
-                String content = line.split("]")[1];
-                switch (header) {
-                    case "[Zoo":
-                        sizeX = Integer.parseInt(content.split(" ")[0]);
-                        sizeY = Integer.parseInt(content.split(" ")[1]);
-                        break;
-                    case "[Obstacle":
-                        break;
-                }
-            } catch (Exception e) {
-
+                content = line.split("]")[1];
+                zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
+            }catch (Exception e) {
+                log.info("Data transmisssion finished !");
             }
-            System.out.println(line);
-
         } while (!line.equals("STOP"));
-        Application.launch();
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        Canvas canvas = new Canvas(16 * sizeX, 16 * sizeY);
 
         // Get the graphics context of the canvas
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+
         // Load the Image
         String imagePath = "/tiles/grass.png";
         Image image = new Image(imagePath);
@@ -89,14 +91,20 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
+                try {
+                    pw.write("STOP");
+                    pw.flush();
+                    service.close();
+                    log.info("Socket Closed");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Platform.exit();
                 System.exit(0);
             }
         });
 
-        zoo = new Zoo(sizeX, sizeY);
-
-        for(int i = 0 ; i<100 ; i++){
+        for(int i = 0 ; i<20 ; i++){
             int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
             switch (randomNum) {
                 case 0:
@@ -118,9 +126,13 @@ public class Main extends Application {
             }
         }
 
+        log.info("Nb obstacle : "+zoo.getObstacles().size());
+        for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
+            gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
+            log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
+        }
 
         Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
