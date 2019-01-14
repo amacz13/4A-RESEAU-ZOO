@@ -139,7 +139,7 @@ public class Main extends Application {
 
         pw.write("STOPANIMALS");
 
-        Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        Timeline runner = new Timeline(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
