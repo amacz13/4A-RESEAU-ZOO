@@ -1,5 +1,6 @@
 package fr.ensim.nicoaxel.server;
 
+import fr.ensim.nicoaxel.client.ImageLoader;
 import fr.ensim.nicoaxel.server.Main;
 import fr.ensim.nicoaxel.server.types.Espece;
 import javafx.scene.canvas.GraphicsContext;
@@ -151,15 +152,15 @@ public abstract class Animal {
     private Image setImage(Espece esp) {
         switch (esp) {
             case LION:
-                return new Image("/animals/lion.png");
+                return ImageLoader.lion;
             case ZEBRA:
-                return new Image("/animals/zebra.png");
+                return ImageLoader.zebra;
             case ELEPHANT:
-                return new Image("/animals/elephant.png");
+                return ImageLoader.elephant;
             case FOX:
-                return new Image("/animals/fox.png");
+                return ImageLoader.fox;
             default:
-                return new Image("/unknown.png");
+                return ImageLoader.unknown;
         }
     }
 
@@ -196,7 +197,7 @@ public abstract class Animal {
     }
 
     void renderAnimal(GraphicsContext gc) {
-        Image grass = new Image("/tiles/grass.png");
+        Image grass = ImageLoader.grass;
         gc.drawImage(grass, oldx * 16, oldy * 16);
         gc.drawImage(image, x * 16, y * 16);
     }
