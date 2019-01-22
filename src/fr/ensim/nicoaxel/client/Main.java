@@ -40,8 +40,9 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-
+    public void start(Stage primaryStage) throws IOException, CloneNotSupportedException {
+        ImageLoader il = new ImageLoader();
+        il.loadImages();
         //Network data reception
         service = new Socket("192.168.43.19", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
@@ -71,8 +72,8 @@ public class Main extends Application {
 
 
         // Load the Image
-        String imagePath = "/tiles/grass.png";
-        Image image = new Image(imagePath);
+        String imagePath = "/res/tiles/grass.png";
+        Image image = il.grass;
         // Draw the Image
 
         for (int i = 0; i < sizeX; i++) {
@@ -85,7 +86,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, (16) * sizeX, (16) * sizeY);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Zoo");
-        primaryStage.getIcons().add(new Image("/animals/lion.png"));
+        primaryStage.getIcons().add((CustomImage) ImageLoader.lion.clone());
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -144,13 +145,13 @@ public class Main extends Application {
         pw.println("STOPANIMALS");
         pw.flush();
 
-        Timeline runner = new Timeline(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
+        Timeline runner = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
-                pw.println("STARTANIMALS");
+                /*pw.println("STARTANIMALS");
                 pw.flush();
                 for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
                     //log.info(zoo.getAnimals().get(i).toSend());
@@ -158,7 +159,7 @@ public class Main extends Application {
                     pw.flush();
                 }
                 pw.println("STOPANIMALS");
-                pw.flush();
+                pw.flush();*/
             }
         }));
         runner.setCycleCount(Timeline.INDEFINITE);

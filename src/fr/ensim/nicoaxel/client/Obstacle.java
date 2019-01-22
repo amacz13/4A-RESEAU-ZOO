@@ -86,16 +86,16 @@ public class Obstacle {
         Image i;
         switch (t) {
             case WOOD:
-                i = new Image("/objects/wood.png");
+                i = ImageLoader.wood;
                 break;
             case STONE:
-                i = new Image("/objects/stone.png");
+                i = ImageLoader.stone;
                 break;
             case WATER:
-                i = new Image("/objects/water.png");
+                i = ImageLoader.water;
                 break;
             default:
-                i = new Image("/unknown.png");
+                i = ImageLoader.unknown;
         }
         return i;
     }
