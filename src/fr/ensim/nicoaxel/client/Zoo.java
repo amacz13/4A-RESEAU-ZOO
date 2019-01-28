@@ -73,19 +73,18 @@ public final class Zoo {
     }
 
     public void render(GraphicsContext gc) {
-        for (Animal a : animals) {
+        for (Animal a : otherAnimals) {
             log.debug("Rendering animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
-        renderOther(gc);
     }
 
-    public void renderOther(GraphicsContext gc) {
+    /*public void renderOther(GraphicsContext gc) {
         for (Animal a : otherAnimals) {
             log.debug("Rendering other animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
-    }
+    }*/
 
     public void action(GraphicsContext gc) {
         this.move();

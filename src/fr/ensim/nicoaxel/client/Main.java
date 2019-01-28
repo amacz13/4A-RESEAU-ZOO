@@ -46,7 +46,7 @@ public class Main extends Application {
         service = new Socket("192.168.43.19", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
-        pw.println("AxelB");
+        pw.println("Axel13");
         pw.flush();
         String line = "";
         line = bf.readLine();
@@ -144,23 +144,34 @@ public class Main extends Application {
         pw.println("STOPANIMALS");
         pw.flush();
 
-        Timeline runner = new Timeline(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
+        Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
+
+                for (int i = 0; i < sizeX; i++) {
+                    for (int j = 0; j < sizeY; j++) {
+                        gc.drawImage(image, i * 16, j * 16);
+                    }
+                }
+
+                for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
+                    gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
+                    log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
+                }
+
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
                 pw.println("STARTANIMALS");
                 pw.flush();
                 for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
-                    //log.info(zoo.getAnimals().get(i).toSend());
                     pw.println(zoo.getAnimals().get(i).toSend());
                     pw.flush();
                 }
                 pw.println("STOPANIMALS");
                 pw.flush();
-                zoo.otherAnimals.clear();
                 log.info("GETTING OTHERS ANIMALS");
+                zoo.otherAnimals.clear();
                 String line = null;
                 do {
                     try {
@@ -170,6 +181,8 @@ public class Main extends Application {
                     }
                     try {
                         String content = line.split("]")[1];
+                        content = content.substring(1);
+                        log.info("Content : "+content);
                         switch (content.split(" ")[0]){
                             case "LION":
                                 log.info("Received Lion");
