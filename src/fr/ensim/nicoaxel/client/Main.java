@@ -43,7 +43,8 @@ public class Main extends Application {
         ImageLoader il = new ImageLoader();
         il.loadImages();
         //Network data reception
-        service = new Socket("192.168.43.19", 4321);
+        //service = new Socket("192.168.43.19", 4321);
+        service = new Socket("192.168.43.227", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
         pw.println("Axel13");

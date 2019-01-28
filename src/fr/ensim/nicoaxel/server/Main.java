@@ -45,6 +45,17 @@ public class Main {
         return list;
     }
 
+    public static ArrayList<Animal> removeAnimals(String user){
+        ArrayList<Animal> list = new ArrayList<>();
+        for(int i=0 ; i<listUserAnimal.size() ; i++){
+            UserAnimals ua = listUserAnimal.get(i);
+            if(ua.user.equals(user)){
+                listUserAnimal.remove(ua);
+            }
+        }
+        return list;
+    }
+
     public static void addListAnimals(UserAnimals ua){
         listUserAnimal.add(ua);
     }
