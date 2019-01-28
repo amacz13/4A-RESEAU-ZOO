@@ -42,7 +42,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException, CloneNotSupportedException {
         ImageLoader il = new ImageLoader();
         il.loadImages();
-        service = new Socket("192.168.43.227", 4321);
+        service = new Socket("localhost", 4321);
+        //service = new Socket("192.168.43.227", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
         pw.println("Axel13");
@@ -126,6 +127,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
 
+                System.out.println("NOUVEAU TOUR : "+c);
+
                 drawAllGrass(gc);
 
                 drawObstacles(gc);
@@ -133,9 +136,12 @@ public class Main extends Application {
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
 
+                System.out.println("Send animals to server");
                 sendMyAnimals(pw);
 
                 log.info("GETTING OTHERS ANIMALS");
+                System.out.println("RECEVEID animals from server");
+
                 zoo.otherAnimals.clear();
                 String line = null;
                 do {
@@ -171,6 +177,31 @@ public class Main extends Application {
                         log.info("Data transmisssion finished !");
                     }
                 } while (!line.equals("ENDANIMALSOTHER"));
+
+                System.out.println("RECEVEID corpse from server");
+
+                log.info("GETTING OTHERS CORPSE");
+                line = null;
+                do {
+                    try {
+                        line = bf.readLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        String content = line.split("]")[1];
+                        content = content.substring(1);
+                        log.info("Content : "+content);
+                        log.info("Received Corpse");
+                        zoo.addCorpse(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2]));
+
+                        //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
+                    }catch (Exception e) {
+                        log.info("Data transmisssion finished !");
+                    }
+                } while (!line.equals("ENDCORPSEOTHER"));
+
+
             }
         }));
         runner.setCycleCount(Timeline.INDEFINITE);
@@ -186,12 +217,22 @@ public class Main extends Application {
         }
         pw.println("STOPANIMALS");
         pw.flush();
+        for(int i = 0 ; i<zoo.getCorpse().size() ; i++){
+            pw.println(zoo.getCorpse().get(i).toSend());
+            pw.flush();
+        }
+        pw.println("STOPCORPSE");
+        pw.flush();
     }
 
     public void drawObstacles(GraphicsContext gc){
         for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
             gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
-            log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
+          //  log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
+        }
+        for(int i = 0 ; i<zoo.getCorpse().size() ; i++){
+            gc.drawImage(ImageLoader.corpse, zoo.getCorpse().get(i).getX() * 16, zoo.getCorpse().get(i).getY() *16);
+            log.info("Drawing corpse @ "+zoo.getCorpse().get(i).getX()+" / "+zoo.getCorpse().get(i).getY());
         }
     }
 

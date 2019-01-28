@@ -13,6 +13,7 @@ public abstract class Animal {
 
     private static final Logger log = LogManager.getRootLogger();
     private static final double LIMIT = 8;
+    private static final int LIMIT_DEATH = 15;
 
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
@@ -25,6 +26,7 @@ public abstract class Animal {
     private Image image;
     private int reproductionTime;
     private int reproductionAge;
+    private int nbStatic = 0;
     private int age = 0;
 
 
@@ -70,6 +72,7 @@ public abstract class Animal {
     void action() {
         age++;
         log.debug("Animal grew up !");
+
         if (immobile > 0) {
             immobile--;
         } else if (immobile < 0) {
@@ -141,6 +144,17 @@ public abstract class Animal {
                 log.debug("Coupling start");
             }
         }
+        if(oldx == x && oldy == y){
+            nbStatic++;
+        }else {
+            nbStatic = 0;
+        }
+        if(nbStatic>(speed+1)*LIMIT_DEATH){
+            Main.zoo.kill(this);
+        }
+        if(Main.zoo.hasCorpseNear(x, y)){
+            Main.zoo.kill(this);
+        }
         log.debug("x : " + x + " / y : " + y);
     }
 
@@ -177,9 +191,11 @@ public abstract class Animal {
 
 
     void renderAnimal(GraphicsContext gc) {
+        System.out.println("A");
         Image grass = ImageLoader.grass;
         gc.drawImage(grass, oldx * 16, oldy * 16);
         gc.drawImage(image, x * 16, y * 16);
+        System.out.println("B");
     }
 
     public String toSend(){

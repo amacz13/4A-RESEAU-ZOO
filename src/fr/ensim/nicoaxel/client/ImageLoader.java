@@ -17,10 +17,12 @@ public class ImageLoader implements Cloneable{
     private static final Logger log = LogManager.getRootLogger();
 
     public static CustomImage grass;
+    public static CustomImage sand;
     public static CustomImage water;
     public static CustomImage stone;
     public static CustomImage wood;
     public static CustomImage lion;
+    public static CustomImage corpse;
     public static CustomImage zebra;
     public static CustomImage elephant;
     public static CustomImage fox;
@@ -62,6 +64,10 @@ public class ImageLoader implements Cloneable{
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/objects/wood.png").openStream();
         Files.copy(in, Paths.get("wood.png"), StandardCopyOption.REPLACE_EXISTING);
         wood = new CustomImage("file:"+Paths.get("wood.png").toAbsolutePath().toString());
+        log.info("Downloading picture of corpse...");
+        in = new URL("http://perso.univ-lemans.fr/~i152300/corpse2.png").openStream();
+        Files.copy(in, Paths.get("corpse.png"), StandardCopyOption.REPLACE_EXISTING);
+        corpse = new CustomImage("file:"+Paths.get("corpse.png").toAbsolutePath().toString());
         log.info("Downloading finished !");
     }
 }
