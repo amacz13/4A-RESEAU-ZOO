@@ -81,9 +81,7 @@ public final class Zoo {
     }
 
     public void render(GraphicsContext gc) {
-        System.out.println("2");
         for (Animal a : otherAnimals) {
-            System.out.println("3");
             log.debug("Rendering animal "+a.getEspece().toString());
             a.renderAnimal(gc);
         }
@@ -97,7 +95,6 @@ public final class Zoo {
     }*/
 
     public void action(GraphicsContext gc) {
-        System.out.println("1");
         this.move();
         this.render(gc);
     }
@@ -148,6 +145,7 @@ public final class Zoo {
     }
 
     public void addCorpse(int x, int y) {
+        System.out.println("OKOK");
         if(!inCorpseList(x, y)){
             corpse.add(new Corpse(x, y));
         }

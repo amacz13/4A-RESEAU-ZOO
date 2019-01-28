@@ -13,7 +13,7 @@ public abstract class Animal {
 
     private static final Logger log = LogManager.getRootLogger();
     private static final double LIMIT = 8;
-    private static final int LIMIT_DEATH = 15;
+    private static final int LIMIT_DEATH = 25;
 
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
@@ -191,11 +191,9 @@ public abstract class Animal {
 
 
     void renderAnimal(GraphicsContext gc) {
-        System.out.println("A");
         Image grass = ImageLoader.grass;
         gc.drawImage(grass, oldx * 16, oldy * 16);
         gc.drawImage(image, x * 16, y * 16);
-        System.out.println("B");
     }
 
     public String toSend(){

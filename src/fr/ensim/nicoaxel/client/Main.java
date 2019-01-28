@@ -46,7 +46,7 @@ public class Main extends Application {
         //service = new Socket("192.168.43.227", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
-        pw.println("Axel13");
+        pw.println("Axel");
         pw.flush();
         String line = "";
         line = bf.readLine();
@@ -193,7 +193,7 @@ public class Main extends Application {
                         content = content.substring(1);
                         log.info("Content : "+content);
                         log.info("Received Corpse");
-                        zoo.addCorpse(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2]));
+                        zoo.addCorpse(Integer.parseInt(content.split(" ")[0]),Integer.parseInt(content.split(" ")[1]));
 
                         //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
                     }catch (Exception e) {
