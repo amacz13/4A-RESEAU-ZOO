@@ -27,7 +27,6 @@ public class ImageLoader implements Cloneable{
     public static CustomImage unknown;
 
     public static void loadImages() throws IOException {
-        log.info("Downloading picture of grass...");
         InputStream in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/grass.png").openStream();
         Files.copy(in, Paths.get("grass.png"), StandardCopyOption.REPLACE_EXISTING);
         grass = new CustomImage("file:"+Paths.get("grass.png").toAbsolutePath().toString());

@@ -42,8 +42,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException, CloneNotSupportedException {
         ImageLoader il = new ImageLoader();
         il.loadImages();
-        //Network data reception
-        //service = new Socket("192.168.43.19", 4321);
         service = new Socket("192.168.43.227", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
@@ -51,7 +49,6 @@ public class Main extends Application {
         pw.flush();
         String line = "";
         line = bf.readLine();
-        String header = line.split("]")[0];
         String content = line.split("]")[1];
         sizeX = Integer.parseInt(content.split(" ")[0]);
         sizeY = Integer.parseInt(content.split(" ")[1]);
@@ -68,19 +65,9 @@ public class Main extends Application {
             }
         } while (!line.equals("STOP"));
 
-        // Get the graphics context of the canvas
-
-
-        // Load the Image
-        String imagePath = "/res/tiles/grass.png";
-        Image image = il.grass;
         // Draw the Image
+        drawAllGrass(gc);
 
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                gc.drawImage(image, i * 16, j * 16);
-            }
-        }
         Pane root = new Pane();
         root.getChildren().add(canvas);
         Scene scene = new Scene(root, (16) * sizeX, (16) * sizeY);
@@ -130,47 +117,24 @@ public class Main extends Application {
         }
 
         log.info("Nb obstacle : "+zoo.getObstacles().size());
-        for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
-            gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
-            log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
-        }
+        drawObstacles(gc);
 
-        pw.println("STARTANIMALS");
-        pw.flush();
-        for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
-            pw.println(zoo.getAnimals().get(i).toSend());
-            pw.flush();
-        }
-
-        pw.println("STOPANIMALS");
-        pw.flush();
+        sendMyAnimals(pw);
 
         Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
 
-                for (int i = 0; i < sizeX; i++) {
-                    for (int j = 0; j < sizeY; j++) {
-                        gc.drawImage(image, i * 16, j * 16);
-                    }
-                }
+                drawAllGrass(gc);
 
-                for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
-                    gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
-                    log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
-                }
+                drawObstacles(gc);
 
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
-                pw.println("STARTANIMALS");
-                pw.flush();
-                for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
-                    pw.println(zoo.getAnimals().get(i).toSend());
-                    pw.flush();
-                }
-                pw.println("STOPANIMALS");
-                pw.flush();
+
+                sendMyAnimals(pw);
+
                 log.info("GETTING OTHERS ANIMALS");
                 zoo.otherAnimals.clear();
                 String line = null;
@@ -212,4 +176,31 @@ public class Main extends Application {
         runner.setCycleCount(Timeline.INDEFINITE);
         runner.play();
     }
+
+    public void sendMyAnimals(PrintWriter pw){
+        pw.println("STARTANIMALS");
+        pw.flush();
+        for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
+            pw.println(zoo.getAnimals().get(i).toSend());
+            pw.flush();
+        }
+        pw.println("STOPANIMALS");
+        pw.flush();
+    }
+
+    public void drawObstacles(GraphicsContext gc){
+        for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
+            gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
+            log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
+        }
+    }
+
+    public void drawAllGrass(GraphicsContext gc){
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                gc.drawImage(ImageLoader.grass, i * 16, j * 16);
+            }
+        }
+    }
+
 }
