@@ -16,15 +16,16 @@ public class ImageLoader implements Cloneable{
 
     private static final Logger log = LogManager.getRootLogger();
 
-    public static CustomImage grass;
-    public static CustomImage water;
-    public static CustomImage stone;
-    public static CustomImage wood;
-    public static CustomImage lion;
-    public static CustomImage zebra;
-    public static CustomImage elephant;
-    public static CustomImage fox;
-    public static CustomImage unknown;
+    public static Image grass;
+    public static Image water;
+    public static Image stone;
+    public static Image wood;
+    public static Image lion;
+    public static Image zebra;
+    public static Image elephant;
+    public static Image fox;
+    public static Image unknown;
+    public static Image sand;
 
     public static void loadImages() throws IOException {
         InputStream in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/grass.png").openStream();
@@ -62,6 +63,10 @@ public class ImageLoader implements Cloneable{
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/objects/wood.png").openStream();
         Files.copy(in, Paths.get("wood.png"), StandardCopyOption.REPLACE_EXISTING);
         wood = new CustomImage("file:"+Paths.get("wood.png").toAbsolutePath().toString());
+        log.info("Downloading picture of sand...");
+        in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/sand.png").openStream();
+        Files.copy(in, Paths.get("sand.png"), StandardCopyOption.REPLACE_EXISTING);
+        sand = new CustomImage("file:"+Paths.get("sand.png").toAbsolutePath().toString());
         log.info("Downloading finished !");
     }
 }

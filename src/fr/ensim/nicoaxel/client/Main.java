@@ -14,16 +14,27 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main extends Application {
@@ -34,21 +45,121 @@ public class Main extends Application {
     public static int sizeX = 40, sizeY = 40;
     public static Socket service;
 
+    Pane root;
+    Stage pstage;
+
     public static void main(String args[]) {
         Application.launch();
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException, CloneNotSupportedException {
+    public void start(Stage primaryStage) throws CloneNotSupportedException, MalformedURLException {
+        pstage = primaryStage;
+        MenuBar menuBar = new MenuBar();
+
+        Menu menuZoo = new Menu("Zoo");
+
+        MenuItem connectItem = new MenuItem("Connexion à un serveur...");
+        MenuItem aboutItem = new MenuItem("A propos de...");
+
+        connectItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                TextInputDialog dialog = new TextInputDialog("localhost:4321");
+                dialog.setTitle("Connexion au serveur");
+                dialog.setHeaderText("Connexion au serveur");
+                dialog.setContentText("Hôte & Port : ");
+
+                Optional<String> result = dialog.showAndWait();
+                if (!result.isPresent()) return;
+
+                System.out.println("Server : " + result.get());
+
+                String host = result.get().split(":")[0];
+                String port = result.get().split(":")[1];
+                mainApp(root,pstage,host,Integer.parseInt(port));
+            }
+        });
+
+        aboutItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                System.out.println("About !");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("A propos du Zoo");
+                alert.setHeaderText("Zoo de Nicolas & Axel");
+                alert.setContentText("ENSIM - Janvier 2019");
+                alert.showAndWait();
+            }
+        });
+
+        menuZoo.getItems().addAll(connectItem, aboutItem);
+        menuBar.getMenus().addAll(menuZoo);
+        final String os = System.getProperty("os.name");
+
+        root = new Pane();
+
         ImageLoader il = new ImageLoader();
-        il.loadImages();
-        service = new Socket("192.168.43.227", 4321);
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
-        BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
-        pw.println("Axel13");
-        pw.flush();
+        try {
+            il.loadImages();
+        } catch (IOException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter p = new PrintWriter(sw);
+            e.printStackTrace(p);
+            String exception = sw.toString();
+            showException("Téléchargement des images impossible", exception);
+        }
+        if (os != null && os.startsWith("Mac")) {
+            menuBar.useSystemMenuBarProperty().set(true);
+            com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
+            app.setDockIconBadge("Zoo");
+            //app.
+            app.setDockIconImage(Toolkit.getDefaultToolkit().getImage("lion.png"));
+        }
+        root.getChildren().add(menuBar);
+
+        pstage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
+
+        pstage.setTitle("Zoo");
+        pstage.getIcons().add((CustomImage) ImageLoader.lion);
+        pstage.setResizable(false);
+        Scene scene = new Scene(root, (16) * sizeX, (16) * sizeY);
+        primaryStage.setScene(scene);
+        pstage.show();
+        System.out.println("Loading finished !");
+    }
+
+    public void mainApp(Pane root, Stage primaryStage, String host, int port){
+        try {
+            service = new Socket(host, port);
+        } catch (IOException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter p = new PrintWriter(sw);
+            e.printStackTrace(p);
+            String exception = sw.toString();
+            showException("Connexion au serveur impossible",exception);
+        }
+        PrintWriter pw = null;
+        BufferedReader bf = null;
         String line = "";
-        line = bf.readLine();
+        try {
+            pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
+            bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
+            pw.println("Axel13");
+            pw.flush();
+            line = bf.readLine();
+        } catch (IOException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter p = new PrintWriter(sw);
+            e.printStackTrace(p);
+            String exception = sw.toString();
+            showException("Communication avec le serveur impossible",exception);
+        }
         String content = line.split("]")[1];
         sizeX = Integer.parseInt(content.split(" ")[0]);
         sizeY = Integer.parseInt(content.split(" ")[1]);
@@ -56,8 +167,8 @@ public class Main extends Application {
         Canvas canvas = new Canvas(16 * sizeX, 16 * sizeY);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         do {
-            line = bf.readLine();
             try {
+                line = bf.readLine();
                 content = line.split("]")[1];
                 zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
             }catch (Exception e) {
@@ -68,22 +179,17 @@ public class Main extends Application {
         // Draw the Image
         drawAllGrass(gc);
 
-        Pane root = new Pane();
         root.getChildren().add(canvas);
-        Scene scene = new Scene(root, (16) * sizeX, (16) * sizeY);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Zoo");
-        primaryStage.getIcons().add((CustomImage) ImageLoader.lion.clone());
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        PrintWriter finalPw = pw;
+        BufferedReader finalBf = bf;
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
                 try {
-                    pw.write("STOP");
-                    pw.flush();
-                    pw.close();
-                    bf.close();
+                    finalPw.write("STOP");
+                    finalPw.flush();
+                    finalPw.close();
+                    finalBf.close();
                     service.close();
                     log.info("Socket Closed");
                 } catch (IOException e) {
@@ -121,6 +227,8 @@ public class Main extends Application {
 
         sendMyAnimals(pw);
 
+        PrintWriter finalPw1 = pw;
+        BufferedReader finalBf1 = bf;
         Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
@@ -133,14 +241,14 @@ public class Main extends Application {
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
 
-                sendMyAnimals(pw);
+                sendMyAnimals(finalPw1);
 
                 log.info("GETTING OTHERS ANIMALS");
                 zoo.otherAnimals.clear();
                 String line = null;
                 do {
                     try {
-                        line = bf.readLine();
+                        line = finalBf1.readLine();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -166,7 +274,6 @@ public class Main extends Application {
                                 zoo.otherAnimals.add(new Zebra(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
                                 break;
                         }
-                        //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
                     }catch (Exception e) {
                         log.info("Data transmisssion finished !");
                     }
@@ -191,16 +298,44 @@ public class Main extends Application {
     public void drawObstacles(GraphicsContext gc){
         for(int i = 0 ; i<zoo.getObstacles().size() ; i++){
             gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
-            log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
+            log.debug("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
         }
     }
 
     public void drawAllGrass(GraphicsContext gc){
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
+                Random r = new Random();
                 gc.drawImage(ImageLoader.grass, i * 16, j * 16);
             }
         }
+    }
+
+    public void showException(String errorMsg, String details){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Une erreur est survenue");
+        alert.setHeaderText("Une erreur est survenue");
+        alert.setContentText(errorMsg);
+        Label label = new Label("Le détail de l'erreur : ");
+        TextArea textArea = new TextArea(details);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(label, 0, 0);
+        expContent.add(textArea, 0, 1);
+        alert.getDialogPane().setExpandableContent(expContent);
+
+        alert.showAndWait();
+
+        Platform.exit();
+        System.exit(0);
     }
 
 }
