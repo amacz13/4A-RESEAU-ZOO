@@ -35,7 +35,6 @@ public class Main extends Application {
     public static Socket service;
 
     public static void main(String args[]) {
-
         Application.launch();
     }
 
@@ -48,7 +47,7 @@ public class Main extends Application {
         service = new Socket("192.168.43.227", 4321);
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
         BufferedReader bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
-        pw.println("Axel");
+        pw.println("AxelB");
         pw.flush();
         String line = "";
         line = bf.readLine();
@@ -146,13 +145,13 @@ public class Main extends Application {
         pw.println("STOPANIMALS");
         pw.flush();
 
-        Timeline runner = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+        Timeline runner = new Timeline(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
                 log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
-                /*pw.println("STARTANIMALS");
+                pw.println("STARTANIMALS");
                 pw.flush();
                 for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
                     //log.info(zoo.getAnimals().get(i).toSend());
@@ -160,7 +159,41 @@ public class Main extends Application {
                     pw.flush();
                 }
                 pw.println("STOPANIMALS");
-                pw.flush();*/
+                pw.flush();
+                zoo.otherAnimals.clear();
+                log.info("GETTING OTHERS ANIMALS");
+                String line = null;
+                do {
+                    try {
+                        line = bf.readLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        String content = line.split("]")[1];
+                        switch (content.split(" ")[0]){
+                            case "LION":
+                                log.info("Received Lion");
+                                zoo.otherAnimals.add(new Lion(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
+                                break;
+                            case "ELEPHANT":
+                                log.info("Received Elephant");
+                                zoo.otherAnimals.add(new Elephant(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
+                                break;
+                            case "FOX":
+                                log.info("Received Fox");
+                                zoo.otherAnimals.add(new Fox(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
+                                break;
+                            case "ZEBRA":
+                                log.info("Received Zebra");
+                                zoo.otherAnimals.add(new Zebra(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
+                                break;
+                        }
+                        //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
+                    }catch (Exception e) {
+                        log.info("Data transmisssion finished !");
+                    }
+                } while (!line.equals("ENDANIMALSOTHER"));
             }
         }));
         runner.setCycleCount(Timeline.INDEFINITE);

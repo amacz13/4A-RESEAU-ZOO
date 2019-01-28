@@ -177,7 +177,7 @@ public abstract class Animal {
 
 
     void renderAnimal(GraphicsContext gc) {
-        Image grass = new Image("https://zoodemiunicorn.azurewebsites.net/res/tiles/grass.png");
+        Image grass = ImageLoader.grass;
         gc.drawImage(grass, oldx * 16, oldy * 16);
         gc.drawImage(image, x * 16, y * 16);
     }
