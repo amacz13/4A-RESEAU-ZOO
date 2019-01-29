@@ -45,6 +45,8 @@ public class Main extends Application {
     public static int sizeX = 40, sizeY = 40;
     public static Socket service;
 
+    public static String pseudo;
+
     Pane root;
     Stage pstage;
 
@@ -59,7 +61,8 @@ public class Main extends Application {
 
         Menu menuZoo = new Menu("Zoo");
 
-        MenuItem connectItem = new MenuItem("Connexion à un serveur...");
+        MenuItem connectItem = new MenuItem("Connexion à un serveur");
+        MenuItem pseudoItem = new MenuItem("Changer de pseudo");
         MenuItem aboutItem = new MenuItem("A propos de...");
 
         connectItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -92,7 +95,23 @@ public class Main extends Application {
             }
         });
 
-        menuZoo.getItems().addAll(connectItem, aboutItem);
+        pseudoItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                TextInputDialog dialog = new TextInputDialog("");
+                dialog.setTitle("Choix d'un pseudo");
+                dialog.setHeaderText("Choix d'un pseudo");
+                dialog.setContentText("Pseudo choisi : ");
+
+                Optional<String> result = dialog.showAndWait();
+                if (!result.isPresent()) return;
+
+                System.out.println("Pseudo : " + result.get());
+
+                pseudo = result.get();
+            }
+        });
+        menuZoo.getItems().addAll(connectItem, pseudoItem, aboutItem);
         menuBar.getMenus().addAll(menuZoo);
         final String os = System.getProperty("os.name");
 
@@ -150,7 +169,7 @@ public class Main extends Application {
         try {
             pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
             bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
-            pw.println("Axel13");
+            pw.println(pseudo);
             pw.flush();
             line = bf.readLine();
         } catch (IOException e) {
@@ -229,6 +248,7 @@ public class Main extends Application {
 
         PrintWriter finalPw1 = pw;
         BufferedReader finalBf1 = bf;
+        BufferedReader finalBf2 = bf;
         Timeline runner = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             int c = 0;
             @Override
@@ -289,7 +309,7 @@ public class Main extends Application {
                 line = null;
                 do {
                     try {
-                        line = bf.readLine();
+                        line = finalBf2.readLine();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

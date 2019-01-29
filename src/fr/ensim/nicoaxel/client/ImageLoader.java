@@ -26,6 +26,7 @@ public class ImageLoader implements Cloneable{
     public static Image fox;
     public static Image unknown;
     public static Image sand;
+    public static Image corpse;
 
     public static void loadImages() throws IOException {
         InputStream in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/grass.png").openStream();
