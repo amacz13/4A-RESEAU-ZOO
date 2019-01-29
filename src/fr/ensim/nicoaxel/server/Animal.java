@@ -13,7 +13,7 @@ import java.util.Random;
 public abstract class Animal {
 
     private static final Logger log = LogManager.getRootLogger();
-    private static final double LIMIT = 8;
+    private static final double LIMIT = 25;
 
     private String id = "";
 

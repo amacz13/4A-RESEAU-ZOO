@@ -14,11 +14,14 @@ import java.util.List;
 
 public final class Zoo {
     private static final Logger log = LogManager.getRootLogger();
+    private static final double LIMIT_DEATH = 0.1;
 
     public List<Animal> animals;
     private List<Animal> babies;
     public List<Animal> otherAnimals;
     private List<Obstacle> obstacles;
+    private List<Corpse> corpse;
+    private List<Grass> herbs;
     private int sizeX, sizeY;
 
     public Zoo(int sizeX, int sizeY) {
@@ -26,6 +29,7 @@ public final class Zoo {
         this.sizeY = Main.sizeY;
         animals = new ArrayList<>();
         babies = new ArrayList<>();
+        corpse = new ArrayList<>();
         obstacles = new ArrayList<>();
         otherAnimals = new ArrayList<>();
     }
@@ -55,6 +59,10 @@ public final class Zoo {
 
     public List<Animal> getAnimals() {
         return animals;
+    }
+
+    public List<Corpse> getCorpse() {
+        return corpse;
     }
 
     public Espece hasAnimal(Animal animal) {
@@ -121,4 +129,34 @@ public final class Zoo {
         babies.add(a);
     }
 
+    public void kill(Animal animal) {
+        corpse.add(new Corpse(animal.x(), animal.y()));
+        animals.remove(animal);
+
+    }
+
+    public boolean hasCorpseNear(int x, int y) {
+        for(Corpse c : corpse){
+            if(Math.abs(c.getX()-x) <= 1 && Math.abs(c.getY()-y) <= 1 && Math.random()<LIMIT_DEATH){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addCorpse(int x, int y) {
+        System.out.println("OKOK");
+        if(!inCorpseList(x, y)){
+            corpse.add(new Corpse(x, y));
+        }
+    }
+
+    private boolean inCorpseList(int x, int y) {
+        for(Corpse c : corpse){
+            if(c.getX() == x && c.getY() == y){
+                return true;
+            }
+        }
+        return false;
+    }
 }

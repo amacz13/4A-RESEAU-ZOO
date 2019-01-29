@@ -1,5 +1,6 @@
 package fr.ensim.nicoaxel.server;
 
+import fr.ensim.nicoaxel.client.Corpse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +17,7 @@ public class Main {
     public static int sizeX = 45, sizeY = 45;
 
     private static ArrayList<UserAnimals> listUserAnimal = new ArrayList<UserAnimals>();
+    private static ArrayList<UserCorpse> listUserCorpse = new ArrayList<UserCorpse>();
 
     public static void main(String args[]) throws IOException {
 
@@ -45,7 +47,17 @@ public class Main {
         return list;
     }
 
-    public static ArrayList<Animal> removeAnimals(String user){
+    public static ArrayList<Corpse> getlistCorpse(String user){
+        ArrayList<Corpse> list = new ArrayList<>();
+        for(UserCorpse ua : listUserCorpse){
+            if(!ua.user.equals(user)){
+                list.addAll(ua.corpses);
+            }
+        }
+        return list;
+    }
+
+    public static void removeAnimals(String user){
         ArrayList<Animal> list = new ArrayList<>();
         for(int i=0 ; i<listUserAnimal.size() ; i++){
             UserAnimals ua = listUserAnimal.get(i);
@@ -53,11 +65,22 @@ public class Main {
                 listUserAnimal.remove(ua);
             }
         }
-        return list;
+    }
+    public static void removeCorpse(String user){
+        ArrayList<Animal> list = new ArrayList<>();
+        for(int i=0 ; i<listUserCorpse.size() ; i++){
+            UserCorpse ua = listUserCorpse.get(i);
+            if(ua.user.equals(user)){
+                listUserCorpse.remove(ua);
+            }
+        }
     }
 
     public static void addListAnimals(UserAnimals ua){
         listUserAnimal.add(ua);
+    }
+    public static void addListCorpse(UserCorpse ua){
+        listUserCorpse.add(ua);
     }
 /*
     public UserAnimals getListAnimals(String user){

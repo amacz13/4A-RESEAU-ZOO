@@ -1,5 +1,6 @@
 package fr.ensim.nicoaxel.server;
 
+import fr.ensim.nicoaxel.client.Corpse;
 import fr.ensim.nicoaxel.client.types.ObjectType;
 import fr.ensim.nicoaxel.server.animals.Elephant;
 import fr.ensim.nicoaxel.server.animals.Fox;
@@ -46,7 +47,9 @@ class Service implements Runnable {
             pw.flush();
 
             UserAnimals ua = new UserAnimals(qui);
+            UserCorpse uc = new UserCorpse(qui);
             Main.addListAnimals(ua);
+            Main.addListCorpse(uc);
 
             do{
                 msg = bf.readLine();
@@ -57,32 +60,39 @@ class Service implements Runnable {
                     if (msg.equals("STARTANIMALS")) {
                         System.out.println(qui + " : #DEBUT TOUR");
                         ua.clear();
+                        uc.clear();
                     }
                     if(msg.startsWith("[Animal]")){
-                        System.out.println(qui + " : Animal : "+msg.split(" ")[1]);
-                        Animal a = new Lion();
-                        switch (msg.split(" ")[1]) {
-                            case "LION":
-                                a = new Lion();
-                                a.setEspece(Espece.LION);
-                                break;
-                            case "ZEBRA":
-                                a = new Zebra();
-                                a.setEspece(Espece.ZEBRA);
-                                break;
-                            case "ELEPHANT":
-                                a = new Elephant();
-                                a.setEspece(Espece.ELEPHANT);
-                                break;
-                            case "FOX":
-                                a = new Fox();
-                                a.setEspece(Espece.FOX);
-                                break;
-                        }
-                        a.setX(Integer.parseInt(msg.split(" ")[2]));
-                        a.setY(Integer.parseInt(msg.split(" ")[3]));
-                        ua.addAnimal(a);
+                            System.out.println(qui + " : Animal : " + msg.split(" ")[1]);
+                            Animal a = new Lion();
+                            switch (msg.split(" ")[1]) {
+                                case "LION":
+                                    a = new Lion();
+                                    a.setEspece(Espece.LION);
+                                    break;
+                                case "ZEBRA":
+                                    a = new Zebra();
+                                    a.setEspece(Espece.ZEBRA);
+                                    break;
+                                case "ELEPHANT":
+                                    a = new Elephant();
+                                    a.setEspece(Espece.ELEPHANT);
+                                    break;
+                                case "FOX":
+                                    a = new Fox();
+                                    a.setEspece(Espece.FOX);
+                                    break;
+                            }
+                            a.setX(Integer.parseInt(msg.split(" ")[2]));
+                            a.setY(Integer.parseInt(msg.split(" ")[3]));
+                            ua.addAnimal(a);
+                          //  msg = bf.readLine();
                     }
+                    /**/if(msg.startsWith("[Corpse]")){
+                        System.out.println(qui + " : Corpse : "+msg.split(" ")[1]);
+                        Corpse c = new Corpse(Integer.parseInt(msg.split(" ")[1]), Integer.parseInt(msg.split(" ")[2]));
+                        uc.addAnimal(c);
+                    }/**/
 
                     if(msg.equals("STOPANIMALS")){
                         for (Animal a : Main.getlistAnimals("")) {
@@ -92,7 +102,15 @@ class Service implements Runnable {
                         }
                         pw.println("ENDANIMALSOTHER");
                         pw.flush();
-                        System.out.println(qui +" :  #FIN TOUR");
+                       /**/
+                        for (Corpse a : Main.getlistCorpse("")) {
+                            System.out.println("SEND TO "+qui+" : "+a.toSend());
+                            pw.println(a.toSend());
+                            pw.flush();
+                        }
+                        pw.println("ENDCORPSEOTHER");
+                        pw.flush();/**/
+                        System.out.println(qui +" : #FIN TOUR");
 
                     }
 
@@ -100,17 +118,19 @@ class Service implements Runnable {
                     System.out.println("Message vide :(");
                 }
 
-                System.out.println("#FIN TOUR");
 
             }while (msg != null &&!msg.equals("STOP"));
             Main.removeAnimals(qui);
+            Main.removeCorpse(qui);
 
             System.out.println(qui+" est partit manger");
         } catch (Exception e) {
             Main.removeAnimals(qui);
+            Main.removeCorpse(qui);
             System.out.println(qui+" a rage quit le zoo");
         }finally {
             Main.removeAnimals(qui);
+            Main.removeCorpse(qui);
             pw.close();
             try {
                 bf.close();

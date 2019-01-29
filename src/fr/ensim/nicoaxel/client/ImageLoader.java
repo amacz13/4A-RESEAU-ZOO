@@ -67,6 +67,10 @@ public class ImageLoader implements Cloneable{
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/sand.png").openStream();
         Files.copy(in, Paths.get("sand.png"), StandardCopyOption.REPLACE_EXISTING);
         sand = new CustomImage("file:"+Paths.get("sand.png").toAbsolutePath().toString());
+        log.info("Downloading picture of corpse...");
+        in = new URL("http://perso.univ-lemans.fr/~i152300/corpse2.png").openStream();
+        Files.copy(in, Paths.get("corpse.png"), StandardCopyOption.REPLACE_EXISTING);
+        corpse = new CustomImage("file:"+Paths.get("corpse.png").toAbsolutePath().toString());
         log.info("Downloading finished !");
     }
 }
