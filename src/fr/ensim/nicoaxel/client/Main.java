@@ -54,6 +54,7 @@ public class Main extends Application {
         Application.launch();
     }
 
+
     @Override
     public void start(Stage primaryStage) throws CloneNotSupportedException, MalformedURLException {
         pstage = primaryStage;
@@ -318,7 +319,7 @@ public class Main extends Application {
                         content = content.substring(1);
                         log.info("Content : "+content);
                         log.info("Received Corpse");
-                        zoo.addCorpse(Integer.parseInt(content.split(" ")[0]),Integer.parseInt(content.split(" ")[1]));
+                        zoo.addCorpse(Integer.parseInt(content.split(" ")[0]),Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2]));
 
                         //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
                     }catch (Exception e) {
@@ -356,7 +357,7 @@ public class Main extends Application {
           //  log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
         }
         for(int i = 0 ; i<zoo.getCorpse().size() ; i++){
-            gc.drawImage(ImageLoader.corpse, zoo.getCorpse().get(i).getX() * 16, zoo.getCorpse().get(i).getY() *16);
+            zoo.getCorpse().get(i).draw(gc);
             log.info("Drawing corpse @ "+zoo.getCorpse().get(i).getX()+" / "+zoo.getCorpse().get(i).getY());
         }
     }
@@ -397,4 +398,7 @@ public class Main extends Application {
         System.exit(0);
     }
 
+    public static void removeCorpse(Corpse c) {
+        zoo.getCorpse().remove(c);
+    }
 }

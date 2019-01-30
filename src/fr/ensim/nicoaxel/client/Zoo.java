@@ -144,10 +144,9 @@ public final class Zoo {
         return false;
     }
 
-    public void addCorpse(int x, int y) {
-        System.out.println("OKOK");
+    public void addCorpse(int x, int y, int ttl) {
         if(!inCorpseList(x, y)){
-            corpse.add(new Corpse(x, y));
+            corpse.add(new Corpse(x, y, ttl));
         }
     }
 

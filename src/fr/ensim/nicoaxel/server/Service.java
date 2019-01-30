@@ -58,12 +58,13 @@ class Service implements Runnable {
                         break;
                     }
                     if (msg.equals("STARTANIMALS")) {
-                        System.out.println(qui + " : #DEBUT TOUR");
+                        //System.out.println(qui + " : #DEBUT TOUR");
                         ua.clear();
                         uc.clear();
+                        //System.out.println("La liste de cadavres a ete videe : "+ua.animals.size());
                     }
                     if(msg.startsWith("[Animal]")){
-                            System.out.println(qui + " : Animal : " + msg.split(" ")[1]);
+                            //System.out.println(qui + " : Animal : " + msg.split(" ")[1]);
                             Animal a = new Lion();
                             switch (msg.split(" ")[1]) {
                                 case "LION":
@@ -89,14 +90,14 @@ class Service implements Runnable {
                           //  msg = bf.readLine();
                     }
                     /**/if(msg.startsWith("[Corpse]")){
-                        System.out.println(qui + " : Corpse : "+msg.split(" ")[1]);
-                        Corpse c = new Corpse(Integer.parseInt(msg.split(" ")[1]), Integer.parseInt(msg.split(" ")[2]));
+                        //System.out.println(qui + " : Corpse : "+msg.split(" ")[1]);
+                        Corpse c = new Corpse(Integer.parseInt(msg.split(" ")[1]), Integer.parseInt(msg.split(" ")[2]), Integer.parseInt(msg.split(" ")[3]));
                         uc.addAnimal(c);
                     }/**/
 
                     if(msg.equals("STOPANIMALS")){
                         for (Animal a : Main.getlistAnimals("")) {
-                            System.out.println("SEND TO "+qui+" : "+a.toSend());
+                            //System.out.println("SEND TO "+qui+" : "+a.toSend());
                             pw.println(a.toSend());
                             pw.flush();
                         }
