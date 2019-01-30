@@ -128,7 +128,7 @@ public class Main extends Application {
             String exception = sw.toString();
             showException("Téléchargement des images impossible", exception);
         }
-        //TODO uncomment
+        //TODO uncomment for iShit
         /*
         if (os != null && os.startsWith("Mac")) {
             menuBar.useSystemMenuBarProperty().set(true);
@@ -285,7 +285,6 @@ public class Main extends Application {
                     }else if(line == null) {
                         log.fatal("Problem in animals reception !!");
                         log.fatal("last line received : "+line);
-                        System.exit(1);
                     }else if (line.startsWith("[Animal]")){
                         try {
                             String content = line.split("]")[1];
@@ -311,7 +310,6 @@ public class Main extends Application {
                         } catch (Exception e) {
                             e.printStackTrace();
                             log.info("Impossible to create animal");
-                            System.exit(0);
                         }
                     }else{
                         log.info("Unknow message type : "+line);
@@ -333,7 +331,6 @@ public class Main extends Application {
                     } else if (line == null) {
                         log.fatal("Problem in CORPSE reception!!");
                         log.fatal("last line received : " + line);
-                        System.exit(1);
                     } else if (line.startsWith("[Corpse]")) {
                         try {
                             String content = line.split("]")[1];
@@ -369,24 +366,19 @@ public class Main extends Application {
             //pw.println("STOPANIMALS");
             //pw.flush();
 
-            log.info("Start send corpses");//TODO remove nico
-
             pw.println("STARTCORPSES");
             pw.flush();
             for (int i = 0; i < zoo.getCorpse().size(); i++) {
-                log.info("corpse n" + i + " / " + zoo.getCorpse().size());//TODO remove nico
                 pw.println(zoo.getCorpse().get(i).toSend());
                 pw.flush();
             }
         }catch (Exception e){
             log.info("Sending failed");
         }finally {
-            log.info("End send corpses");//TODO remove nico
             pw.println("STOPCORPSE");
             pw.flush();
             pw.println("STOPANIMALS");
             pw.flush();
-            log.info("Stop sent");//TODO remove nico
         }
     }
 

@@ -34,16 +34,15 @@ class Service implements Runnable {
 
             qui = bf.readLine()+" ("+ maSocket.getPort()+")";
             if(qui.equals("Axel")){
-                System.out.println(qui + " vient manger");
+                log.info(qui + " vient manger");
             }else{
-                System.out.println(qui + " : vient de se connecter");
+                log.info(qui + " : is now connected");
             }
 
 
             Thread.sleep(500);
 
             color = UserColor.getFreeColor();
-            System.out.println("Color send : "+color);
             pw.println(color);
             pw.flush();
             String msg = "";
@@ -70,13 +69,12 @@ class Service implements Runnable {
                         break;
                     }
                     if (msg.equals("STARTANIMALS")) {
-                        System.out.println(qui + " : #DEBUT TOUR");
+                        log.info(qui + " : #DEBUT TOUR");
                         ua.clear();
                         uc.clear();
                     }
 
                     if(msg.startsWith("[Animal]")){
-                            //System.out.println(qui + " : Animal : " + msg.split(" ")[1]);
                             Animal a = new Lion();
                             switch (msg.split(" ")[1]) {
                                 case "LION":
@@ -103,10 +101,7 @@ class Service implements Runnable {
                     }
 
                     if(msg.startsWith("[Corpse]")){
-                        //log.info("Corpse received :");
-                        //System.out.println(qui + " : Corpse : "+msg.split(" ")[1]);
                         Corpse c = new Corpse(Integer.parseInt(msg.split(" ")[1]), Integer.parseInt(msg.split(" ")[2]), Integer.parseInt(msg.split(" ")[3]),msg.split(" ")[4]);
-                        //log.info(c);
                         uc.addAnimal(c);
                     }
 
@@ -150,12 +145,12 @@ class Service implements Runnable {
                         pw.println("ENDCORPSEOTHER");
                         pw.flush();/**/
                         listUC.clear();
-                        System.out.println(qui +" : #FIN TOUR");
+                        log.info(qui +" : #ROUND END");
 
                     }
 
                 }else{
-                    System.out.println("Message vide :(");
+                    log.info("Message vide :(");
                 }
 
 
@@ -164,12 +159,12 @@ class Service implements Runnable {
             Main.removeCorpse(qui);
             UserColor.liberate(color);
 
-            System.out.println(qui+" est partit manger");
+            log.info(qui+" leave the zoo");
         } catch (Exception e) {
             Main.removeAnimals(qui);
             Main.removeCorpse(qui);
             UserColor.liberate(color);
-            System.out.println(qui+" a rage quit le zoo");
+            log.info(qui+" rage quit the zoo");
         }finally {
             Main.removeAnimals(qui);
             Main.removeCorpse(qui);
