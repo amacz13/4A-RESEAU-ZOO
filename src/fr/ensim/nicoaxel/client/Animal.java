@@ -1,7 +1,6 @@
 package fr.ensim.nicoaxel.client;
 
 import fr.ensim.nicoaxel.client.types.Espece;
-import fr.ensim.nicoaxel.client.Main;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +12,7 @@ public abstract class Animal {
 
     private static final Logger log = LogManager.getRootLogger();
     private static final double LIMIT = 8;
-    private static final int LIMIT_DEATH = 25;
+    private static final int LIMIT_DEATH = 35;
 
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
@@ -28,14 +27,16 @@ public abstract class Animal {
     private int reproductionAge;
     private int nbStatic = 0;
     private int age = 0;
+    private String color = ".";
 
 
-    public Animal(int x, int y, Espece esp, int speed, int repro, int ageRepro) {
+    public Animal(int x, int y, Espece esp, int speed, int repro, int ageRepro, String color) {
 
         this.x = x;
         this.y = y;
         destX = x;
         destY = y;
+        this.color = color;
 
         espece = esp;
         this.speed = speed;
@@ -48,13 +49,13 @@ public abstract class Animal {
     }
 
 
-    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro) {
-        this(x, y, esp, speed, repro, ageRepro);
+    public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro, String color) {
+        this(x, y, esp, speed, repro, ageRepro, color);
         this.sex = sex;
     }
 
     public Animal(int x, int y, Espece esp, char sex, int speed, int repro, int ageRepro, int destX, int destY) {
-        this(x, y, esp, sex, speed, repro, ageRepro);
+        this(x, y, esp, sex, speed, repro, ageRepro,"");
         this.destY = destY;
         this.destX = destX;
     }
@@ -193,11 +194,11 @@ public abstract class Animal {
     void renderAnimal(GraphicsContext gc) {
         Image grass = ImageLoader.grass;
         gc.drawImage(grass, oldx * 16, oldy * 16);
-        gc.drawImage(image, x * 16, y * 16);
+        gc.drawImage(ImageLoader.modifImg(image, color), x * 16, y * 16);
     }
 
     public String toSend(){
-        return "[Animal] "+espece+" "+x+" "+y;
+        return "[Animal] "+espece+" "+x+" "+y+" "+color;
     }
 
 }

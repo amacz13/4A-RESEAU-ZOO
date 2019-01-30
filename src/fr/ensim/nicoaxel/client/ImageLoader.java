@@ -1,9 +1,16 @@
 package fr.ensim.nicoaxel.client;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -32,46 +39,99 @@ public class ImageLoader implements Cloneable{
         InputStream in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/grass.png").openStream();
         Files.copy(in, Paths.get("grass.png"), StandardCopyOption.REPLACE_EXISTING);
         grass = new CustomImage("file:"+Paths.get("grass.png").toAbsolutePath().toString());
+
+
         log.info("Downloading picture of lion...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/animals/lion.png").openStream();
         Files.copy(in, Paths.get("lion.png"), StandardCopyOption.REPLACE_EXISTING);
         lion = new CustomImage("file:"+Paths.get("lion.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of zebra...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/animals/zebra.png").openStream();
         Files.copy(in, Paths.get("zebra.png"), StandardCopyOption.REPLACE_EXISTING);
         zebra = new CustomImage("file:"+Paths.get("zebra.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of elephant...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/animals/elephant.png").openStream();
         Files.copy(in, Paths.get("elephant.png"), StandardCopyOption.REPLACE_EXISTING);
         elephant = new CustomImage("file:"+Paths.get("elephant.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of fox...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/animals/fox.png").openStream();
         Files.copy(in, Paths.get("fox.png"), StandardCopyOption.REPLACE_EXISTING);
         fox = new CustomImage("file:"+Paths.get("fox.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of unknown...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/unknown.png").openStream();
         Files.copy(in, Paths.get("unknown.png"), StandardCopyOption.REPLACE_EXISTING);
         unknown = new CustomImage("file:"+Paths.get("unknown.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of water...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/objects/water.png").openStream();
         Files.copy(in, Paths.get("water.png"), StandardCopyOption.REPLACE_EXISTING);
         water = new CustomImage("file:"+Paths.get("water.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of stone...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/objects/stone.png").openStream();
         Files.copy(in, Paths.get("stone.png"), StandardCopyOption.REPLACE_EXISTING);
         stone = new CustomImage("file:"+Paths.get("stone.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of wood...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/objects/wood.png").openStream();
         Files.copy(in, Paths.get("wood.png"), StandardCopyOption.REPLACE_EXISTING);
         wood = new CustomImage("file:"+Paths.get("wood.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of sand...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/tiles/sand.png").openStream();
         Files.copy(in, Paths.get("sand.png"), StandardCopyOption.REPLACE_EXISTING);
         sand = new CustomImage("file:"+Paths.get("sand.png").toAbsolutePath().toString());
+
         log.info("Downloading picture of corpse...");
         in = new URL("http://perso.univ-lemans.fr/~i152300/corpse2.png").openStream();
         Files.copy(in, Paths.get("corpse.png"), StandardCopyOption.REPLACE_EXISTING);
         corpse = new CustomImage("file:"+Paths.get("corpse.png").toAbsolutePath().toString());
+
         log.info("Downloading finished !");
     }
+
+
+    public static Image modifImg(Image img, String colorStr){
+
+        Color color = getColorFromString(colorStr);
+
+        PixelReader pixelReader = img.getPixelReader();
+        WritableImage wImage = new WritableImage(pixelReader,(int)img.getWidth(),(int)img.getHeight());
+        PixelWriter pixelWriter = wImage.getPixelWriter();
+
+
+        int bx = (int) (img.getWidth()/2);
+        int by = (int) (img.getHeight()/4)-1;
+
+
+        for(int x=-2;x<2;x++) {
+            for(int y=-2;y<2;y++) {
+                pixelWriter.setColor(bx+x,by+y, color);
+            }
+        }
+
+
+        return (Image)wImage;
+    }
+
+    // RED BLUE BLACK GREEN MAGENTA ORANGE WHITE CYAN
+
+    private static Color getColorFromString(String colorStr) {
+        switch (colorStr){
+            case "RED" : return Color.RED;
+            case "BLUE" : return Color.BLUE;
+            case "BLACK" : return Color.BLACK;
+            case "GREEN" : return Color.GREEN;
+            case "MAGENTA" : return Color.MAGENTA;
+            case "ORANGE" : return Color.ORANGE;
+            case "WHITE" : return Color.WHITE;
+            case "CYAN" : return Color.CYAN;
+            default: return Color.GHOSTWHITE;
+        }
+    }
+
 }

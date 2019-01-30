@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class Zoo {
     private static final Logger log = LogManager.getRootLogger();
-    private static final double LIMIT_DEATH = 0.1;
+    private static final double LIMIT_DEATH = 0.05;
 
     public List<Animal> animals;
     private List<Animal> babies;
@@ -144,9 +144,9 @@ public final class Zoo {
         return false;
     }
 
-    public void addCorpse(int x, int y, int ttl) {
+    public void addCorpse(int x, int y, int ttl, String color) {
         if(!inCorpseList(x, y)){
-            corpse.add(new Corpse(x, y, ttl));
+            corpse.add(new Corpse(x, y, ttl, color));
         }
     }
 

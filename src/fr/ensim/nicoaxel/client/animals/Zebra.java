@@ -8,14 +8,17 @@ import fr.ensim.nicoaxel.client.Main;
 public class Zebra extends Animal {
 
     public Zebra(){
-        super(Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.ZEBRA, 1,5,20);
+        super(Coordinates.generateCoordinate(Main.zoo).x, Coordinates.generateCoordinate(Main.zoo).y, Espece.ZEBRA, 1,5,20, "");
     }
 
     public Zebra(int x, int y) {
-        super(x, y, Espece.ZEBRA,1, 5,20 );
+        super(x, y, Espece.ZEBRA,1, 5,20, "" );
     }
-    public Zebra(int x, int y, char sex) {
-        super(x, y, Espece.ZEBRA, sex, 1, 5, 20);
+    public Zebra(int x, int y, String color) {
+        super(x, y, Espece.ZEBRA,1, 5,20, color );
+    }
+    public Zebra(int x, int y, char sex, String color) {
+        super(x, y, Espece.ZEBRA, sex, 1, 5, 20, color);
     }
     public Zebra(int x, int y, char sex, int destX, int destY) {
         super(x, y, Espece.ZEBRA, sex, 1,5,20, destX, destY);

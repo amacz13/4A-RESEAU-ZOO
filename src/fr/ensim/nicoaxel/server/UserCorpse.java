@@ -7,8 +7,10 @@ import java.util.ArrayList;
 public class UserCorpse {
     ArrayList<Corpse> corpses = new ArrayList<>();
     String user = "";
+    String color = ".";
 
-    public UserCorpse(String user){
+    public UserCorpse(String user, String color){
+        this.color = color;
         this.user = user;
     }
 

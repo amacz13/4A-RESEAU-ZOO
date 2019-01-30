@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class UserAnimals {
     ArrayList<Animal> animals = new ArrayList<>();
     String user = "";
+    String color = ".";
 
-    public UserAnimals(String user){
+    public UserAnimals(String user, String color){
         this.user = user;
+        this.color = color;
     }
 
     public void clear(){

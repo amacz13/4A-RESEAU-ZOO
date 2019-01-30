@@ -6,16 +6,18 @@ import javafx.scene.image.Image;
 public class Corpse {
 
     private int x, y;
-    private int timeToLife = 150;
+    private int timeToLife = 100;
+    private String color =Main.color;
 
     public Corpse(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    public Corpse(int x, int y, int ttl) {
+    public Corpse(int x, int y, int ttl, String color) {
         this.x = x;
         this.y = y;
         timeToLife = ttl;
+        this.color = color;
     }
 
     public int getX() {
@@ -27,6 +29,9 @@ public class Corpse {
     }
 
     public String toSend(){
+        return "[Corpse] "+x+" "+y+" "+timeToLife+" "+color;
+    }
+    public String toSendServer(){
         return "[Corpse] "+x+" "+y+" "+timeToLife;
     }
 
@@ -35,7 +40,7 @@ public class Corpse {
         if(timeToLife--<0){
             Main.removeCorpse(this);
         }else{
-            gc.drawImage(ImageLoader.corpse, x * 16, y *16);
+            gc.drawImage(ImageLoader.modifImg(ImageLoader.corpse, color), x * 16, y *16);
         }
     }
 }

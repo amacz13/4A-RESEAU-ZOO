@@ -29,7 +29,6 @@ import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -45,7 +44,8 @@ public class Main extends Application {
     public static int sizeX = 40, sizeY = 40;
     public static Socket service;
 
-    public static String pseudo;
+    public static String pseudo = "Fantomas";
+    public static String color = ".";
 
     Pane root;
     Stage pstage;
@@ -128,13 +128,15 @@ public class Main extends Application {
             String exception = sw.toString();
             showException("Téléchargement des images impossible", exception);
         }
+        //TODO uncomment
+        /*
         if (os != null && os.startsWith("Mac")) {
             menuBar.useSystemMenuBarProperty().set(true);
             com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
             app.setDockIconBadge("Zoo");
             //app.
             app.setDockIconImage(Toolkit.getDefaultToolkit().getImage("lion.png"));
-        }
+        }*/
         root.getChildren().add(menuBar);
 
         pstage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -172,6 +174,8 @@ public class Main extends Application {
             bf = new BufferedReader(new InputStreamReader(service.getInputStream()));
             pw.println(pseudo);
             pw.flush();
+
+            color = bf.readLine();
             line = bf.readLine();
         } catch (IOException e) {
             StringWriter sw = new StringWriter();
@@ -245,7 +249,7 @@ public class Main extends Application {
         log.info("Nb obstacle : "+zoo.getObstacles().size());
         drawObstacles(gc);
 
-        sendMyAnimals(pw);
+        sendMyObject(pw);
 
         PrintWriter finalPw1 = pw;
         BufferedReader finalBf1 = bf;
@@ -254,101 +258,136 @@ public class Main extends Application {
             int c = 0;
             @Override
             public void handle(ActionEvent event) {
+                log.info(pseudo+" - NEW ROUND - ");
+                log.info("Round "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
 
-                System.out.println("NOUVEAU TOUR : "+c);
-
+                log.info("Draw background");
                 drawAllGrass(gc);
-
                 drawObstacles(gc);
-
-                log.info("Temps "+(c++)+" ("+Main.zoo.nbAnimal()+" animals)");
                 Main.zoo.action(gc);
 
-                sendMyAnimals(finalPw1);
+                log.info("Send my animals");
+                sendMyObject(finalPw1);
 
-                log.info("GETTING OTHERS ANIMALS");
-                System.out.println("RECEVEID animals from server");
-
+                log.info("Reception of other animals");
                 zoo.otherAnimals.clear();
-                String line = null;
+                String line = "";
                 do {
                     try {
                         line = finalBf1.readLine();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    try {
-                        String content = line.split("]")[1];
-                        content = content.substring(1);
-                        log.info("Content : "+content);
-                        switch (content.split(" ")[0]){
-                            case "LION":
-                                log.info("Received Lion");
-                                zoo.otherAnimals.add(new Lion(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
-                                break;
-                            case "ELEPHANT":
-                                log.info("Received Elephant");
-                                zoo.otherAnimals.add(new Elephant(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
-                                break;
-                            case "FOX":
-                                log.info("Received Fox");
-                                zoo.otherAnimals.add(new Fox(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
-                                break;
-                            case "ZEBRA":
-                                log.info("Received Zebra");
-                                zoo.otherAnimals.add(new Zebra(Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2])));
-                                break;
-                        }
-                    }catch (Exception e) {
+                    log.info("Message received : "+line);
+
+                    if("ENDANIMALSOTHER".equals(line)){
                         log.info("Data transmisssion finished !");
+                    }else if(line == null) {
+                        log.fatal("Problem in animals reception !!");
+                        log.fatal("last line received : "+line);
+                        System.exit(1);
+                    }else if (line.startsWith("[Animal]")){
+                        try {
+                            String content = line.split("]")[1];
+                            content = content.substring(1);
+                            switch (content.split(" ")[0]) {
+                                case "LION":
+                                    log.info("Received Lion");
+                                    zoo.otherAnimals.add(new Lion(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
+                                    break;
+                                case "ELEPHANT":
+                                    log.info("Received Elephant");
+                                    zoo.otherAnimals.add(new Elephant(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
+                                    break;
+                                case "FOX":
+                                    log.info("Received Fox");
+                                    zoo.otherAnimals.add(new Fox(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
+                                    break;
+                                case "ZEBRA":
+                                    log.info("Received Zebra");
+                                    zoo.otherAnimals.add(new Zebra(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            log.info("Impossible to create animal");
+                            System.exit(0);
+                        }
+                    }else{
+                        log.info("Unknow message type : "+line);
                     }
-                } while (!line.equals("ENDANIMALSOTHER"));
+                } while (!"ENDANIMALSOTHER".equals(line));
 
-                System.out.println("RECEVEID corpse from server");
 
-                log.info("GETTING OTHERS CORPSE");
-                line = null;
+                log.info("Reception of other corpses");
                 do {
                     try {
-                        line = finalBf2.readLine();
+                        line = finalBf1.readLine();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    try {
-                        String content = line.split("]")[1];
-                        content = content.substring(1);
-                        log.info("Content : "+content);
-                        log.info("Received Corpse");
-                        zoo.addCorpse(Integer.parseInt(content.split(" ")[0]),Integer.parseInt(content.split(" ")[1]),Integer.parseInt(content.split(" ")[2]));
+                    log.info("Message received : " + line);
 
-                        //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
-                    }catch (Exception e) {
+                    if ("ENDCORPSEOTHER".equals(line)) {
                         log.info("Data transmisssion finished !");
-                    }
-                } while (!line.equals("ENDCORPSEOTHER"));
+                    } else if (line == null) {
+                        log.fatal("Problem in CORPSE reception!!");
+                        log.fatal("last line received : " + line);
+                        System.exit(1);
+                    } else if (line.startsWith("[Corpse]")) {
+                        try {
+                            String content = line.split("]")[1];
+                            content = content.substring(1);
+                            log.info("Content : " + content);
+                            log.info("Received Corpse");
+                            zoo.addCorpse(Integer.parseInt(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]);
 
+                            //zoo.addObstacle(new Obstacle(ObjectType.valueOf(content.split(" ")[0]), Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), gc));
+                        } catch (Exception e) {
+                            log.info("Impossible to create corpse");
+                        }
+                    } else {
+                        log.info("Unknow message type : " + line);
+                    }
+                }while (!"ENDCORPSEOTHER".equals(line));
 
             }
+
         }));
         runner.setCycleCount(Timeline.INDEFINITE);
         runner.play();
     }
 
-    public void sendMyAnimals(PrintWriter pw){
+    public void sendMyObject(PrintWriter pw){
         pw.println("STARTANIMALS");
         pw.flush();
-        for(int i = 0 ; i<zoo.getAnimals().size() ; i++){
-            pw.println(zoo.getAnimals().get(i).toSend());
+        try {
+            for (int i = 0; i < zoo.getAnimals().size(); i++) {
+                pw.println(zoo.getAnimals().get(i).toSend());
+                pw.flush();
+            }
+            //pw.println("STOPANIMALS");
+            //pw.flush();
+
+            log.info("Start send corpses");//TODO remove nico
+
+            pw.println("STARTCORPSES");
             pw.flush();
-        }
-        pw.println("STOPANIMALS");
-        pw.flush();
-        for(int i = 0 ; i<zoo.getCorpse().size() ; i++){
-            pw.println(zoo.getCorpse().get(i).toSend());
+            for (int i = 0; i < zoo.getCorpse().size(); i++) {
+                log.info("corpse n" + i + " / " + zoo.getCorpse().size());//TODO remove nico
+                pw.println(zoo.getCorpse().get(i).toSend());
+                pw.flush();
+            }
+        }catch (Exception e){
+            log.info("Sending failed");
+        }finally {
+            log.info("End send corpses");//TODO remove nico
+            pw.println("STOPCORPSE");
             pw.flush();
+            pw.println("STOPANIMALS");
+            pw.flush();
+            log.info("Stop sent");//TODO remove nico
         }
-        pw.println("STOPCORPSE");
-        pw.flush();
     }
 
     public void drawObstacles(GraphicsContext gc){
@@ -356,9 +395,14 @@ public class Main extends Application {
             gc.drawImage(zoo.getObstacles().get(i).img, zoo.getObstacles().get(i).x() * 16, zoo.getObstacles().get(i).y() *16);
           //  log.info("Drawing "+zoo.getObstacles().get(i).img.toString()+ " @ "+zoo.getObstacles().get(i).x()+" / "+zoo.getObstacles().get(i).y());
         }
-        for(int i = 0 ; i<zoo.getCorpse().size() ; i++){
-            zoo.getCorpse().get(i).draw(gc);
-            log.info("Drawing corpse @ "+zoo.getCorpse().get(i).getX()+" / "+zoo.getCorpse().get(i).getY());
+        try {
+            for (int i = 0; i < zoo.getCorpse().size(); i++) {
+                log.info("Corpse " + i + " / " + zoo.getCorpse().size());
+                zoo.getCorpse().get(i).draw(gc);
+                log.info("Drawing corpse @ " + zoo.getCorpse().get(i).getX() + " / " + zoo.getCorpse().get(i).getY());
+            }
+        }catch (Exception e){
+            log.info("Minor bug in corpses list");
         }
     }
 

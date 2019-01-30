@@ -4,6 +4,7 @@ import fr.ensim.nicoaxel.client.Corpse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -34,6 +35,28 @@ public class Main {
             Thread t = new Thread(new Service(s));
             t.start();
         } while (true);
+    }
+
+
+
+    public static ArrayList<UserAnimals> getlistUserAnimals(String user){
+        ArrayList<UserAnimals> list = new ArrayList<>();
+        for(UserAnimals ua : listUserAnimal){
+            if(!ua.user.equals(user)){
+                list.add(ua);
+            }
+        }
+        return list;
+    }
+
+    public static ArrayList<UserCorpse> getlistUserCorpse(String user){
+        ArrayList<UserCorpse> list = new ArrayList<>();
+        for(UserCorpse ua : listUserCorpse){
+            if(!ua.user.equals(user)){
+                list.add(ua);
+            }
+        }
+        return list;
     }
 
 
@@ -81,6 +104,14 @@ public class Main {
     }
     public static void addListCorpse(UserCorpse ua){
         listUserCorpse.add(ua);
+    }
+
+    public static int getNbAnimals() {
+        int nb = 0;
+        for(UserAnimals ua : listUserAnimal){
+            nb += ua.animals.size();
+        }
+        return nb;
     }
 /*
     public UserAnimals getListAnimals(String user){
