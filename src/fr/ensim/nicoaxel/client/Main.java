@@ -160,7 +160,7 @@ public class Main extends Application {
     public void mainApp(Pane root, Stage primaryStage, String host, int port){
 
 
-        Thread t = new Thread(new Sound(Sound.MUSIC));
+        Thread t = new Thread(new BackgroundSound(Sound.MUSIC));
         t.start();
 
 

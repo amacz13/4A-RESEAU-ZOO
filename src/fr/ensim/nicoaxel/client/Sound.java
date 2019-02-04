@@ -7,18 +7,11 @@ import javazoom.jl.player.Player;
 
 public class Sound implements Runnable {
 
-    public static final String MUSIC = "Hang.mp3";
+    public static final String MUSIC = "Hang.mp3"; //For test : "music.mp3"
     public static final String DEATH = "death.mp3";
     public static final String DEATH_CORPSE = "death2.mp3";
     public static final String COUPLING = "coupling.mp3";
     public static final String BABY = "baby.mp3";
-
-    /*
-    public static FileInputStream music;
-    public static FileInputStream death;
-    public static FileInputStream death2;
-    public static FileInputStream coupling;
-    public static FileInputStream baby;*/
 
     private String sound;
 

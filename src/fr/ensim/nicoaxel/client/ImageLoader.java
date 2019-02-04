@@ -129,12 +129,12 @@ public class ImageLoader implements Cloneable{
         in = new URL("http://perso.univ-lemans.fr/~i152300/baby.mp3").openStream();
         Files.copy(in, Paths.get("baby.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("baby.mp3");
-
+/*
         log.info("Downloading sound of hang music...");
         in = new URL("http://perso.univ-lemans.fr/~i152300/Hang.mp3").openStream();
         Files.copy(in, Paths.get("Hang.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("Hang.mp3");
-
+*/
         log.info("Downloading finished !");
     }
 
