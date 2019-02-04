@@ -6,11 +6,20 @@ import fr.ensim.nicoaxel.client.animals.Lion;
 import fr.ensim.nicoaxel.client.animals.Zebra;
 import fr.ensim.nicoaxel.client.types.Espece;
 import javafx.scene.canvas.GraphicsContext;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static sun.audio.AudioPlayer.player;
 
 public final class Zoo {
     private static final Logger log = LogManager.getRootLogger();
@@ -95,6 +104,7 @@ public final class Zoo {
     }*/
 
     public void action(GraphicsContext gc) {
+
         this.move();
         this.render(gc);
     }
@@ -106,6 +116,8 @@ public final class Zoo {
             }
         }
 
+        Thread t = new Thread(new Sound(Sound.BABY));
+        t.start();
         log.debug("Bébé créé");
         Animal a;
         switch (esp) {

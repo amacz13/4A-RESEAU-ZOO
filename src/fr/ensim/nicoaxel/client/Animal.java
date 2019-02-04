@@ -143,6 +143,8 @@ public abstract class Animal {
             if (age > reproductionAge && espece.equals(Main.zoo.hasAnimal(this))) {
                 immobile = reproductionTime;
                 log.debug("Coupling start");
+                Thread t = new Thread(new Sound(Sound.COUPLING));
+                t.start();
             }
         }
         if(oldx == x && oldy == y){
@@ -151,9 +153,13 @@ public abstract class Animal {
             nbStatic = 0;
         }
         if(nbStatic>(speed+1)*LIMIT_DEATH){
+            Thread t = new Thread(new Sound(Sound.DEATH));
+            t.start();
             Main.zoo.kill(this);
         }
         if(Main.zoo.hasCorpseNear(x, y)){
+            Thread t = new Thread(new Sound(Sound.DEATH_CORPSE));
+            t.start();
             Main.zoo.kill(this);
         }
         log.debug("x : " + x + " / y : " + y);

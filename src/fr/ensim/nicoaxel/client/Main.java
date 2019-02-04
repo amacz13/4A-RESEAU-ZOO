@@ -121,6 +121,7 @@ public class Main extends Application {
         ImageLoader il = new ImageLoader();
         try {
             il.loadImages();
+            il.loadSounds();
         } catch (IOException e) {
             StringWriter sw = new StringWriter();
             PrintWriter p = new PrintWriter(sw);
@@ -157,6 +158,12 @@ public class Main extends Application {
     }
 
     public void mainApp(Pane root, Stage primaryStage, String host, int port){
+
+
+        Thread t = new Thread(new Sound(Sound.MUSIC));
+        t.start();
+
+
         try {
             service = new Socket(host, port);
         } catch (IOException e) {
