@@ -1,9 +1,6 @@
 package fr.ensim.nicoaxel.client;
 
-import fr.ensim.nicoaxel.client.animals.Elephant;
-import fr.ensim.nicoaxel.client.animals.Fox;
-import fr.ensim.nicoaxel.client.animals.Lion;
-import fr.ensim.nicoaxel.client.animals.Zebra;
+import fr.ensim.nicoaxel.client.animals.*;
 import fr.ensim.nicoaxel.client.types.Espece;
 import javafx.scene.canvas.GraphicsContext;
 import javazoom.jl.decoder.JavaLayerException;
@@ -132,6 +129,12 @@ public final class Zoo {
                 break;
             case ZEBRA:
                 a = new Zebra(x,y);
+                break;
+            case UNICORN:
+                a = new Unicorn(x,y);
+                break;
+            case MOULE:
+                a = new Moule(x,y);
                 break;
             default:
                 a = new Fox(x,y);

@@ -2,10 +2,7 @@ package fr.ensim.nicoaxel.server;
 
 import fr.ensim.nicoaxel.client.Corpse;
 import fr.ensim.nicoaxel.client.types.ObjectType;
-import fr.ensim.nicoaxel.server.animals.Elephant;
-import fr.ensim.nicoaxel.server.animals.Fox;
-import fr.ensim.nicoaxel.server.animals.Lion;
-import fr.ensim.nicoaxel.server.animals.Zebra;
+import fr.ensim.nicoaxel.server.animals.*;
 import fr.ensim.nicoaxel.server.types.Espece;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -92,6 +89,14 @@ class Service implements Runnable {
                                 case "FOX":
                                     a = new Fox();
                                     a.setEspece(Espece.FOX);
+                                    break;
+                                case "UNICORN":
+                                    a = new Unicorn();
+                                    a.setEspece(Espece.UNICORN);
+                                    break;
+                                case "MOULE":
+                                    a = new Moule();
+                                    a.setEspece(Espece.MOULE);
                                     break;
                             }
                             a.setX(Integer.parseInt(msg.split(" ")[2]));

@@ -1,9 +1,6 @@
 package fr.ensim.nicoaxel.client;
 
-import fr.ensim.nicoaxel.client.animals.Elephant;
-import fr.ensim.nicoaxel.client.animals.Fox;
-import fr.ensim.nicoaxel.client.animals.Lion;
-import fr.ensim.nicoaxel.client.animals.Zebra;
+import fr.ensim.nicoaxel.client.animals.*;
 import fr.ensim.nicoaxel.client.types.ObjectType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,8 +8,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,7 +27,6 @@ import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -272,8 +266,8 @@ public class Main extends Application {
             }
         });
 
-        for(int i = 0 ; i<20 ; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+        for(int i = 0 ; i<25 ; i++){
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 5 + 1);
             switch (randomNum) {
                 case 0:
                     zoo.addAnimal(new Lion());
@@ -290,6 +284,14 @@ public class Main extends Application {
                 case 3:
                     zoo.addAnimal(new Elephant());
                     log.debug("Creating Elephant #"+i);
+                    break;
+                case 4:
+                    zoo.addAnimal(new Unicorn());
+                    log.debug("Creating Unicorn #"+i);
+                    break;
+                case 5:
+                    zoo.addAnimal(new Moule());
+                    log.debug("Creating Moule #"+i);
                     break;
             }
         }
@@ -353,6 +355,14 @@ public class Main extends Application {
                                 case "ZEBRA":
                                     log.info("Received Zebra");
                                     zoo.otherAnimals.add(new Zebra(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
+                                    break;
+                                case "UNICORN":
+                                    log.info("Received Unicorn");
+                                    zoo.otherAnimals.add(new Unicorn(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
+                                    break;
+                                case "MOULE":
+                                    log.info("Received Moule");
+                                    zoo.otherAnimals.add(new Moule(Integer.parseInt(content.split(" ")[1]), Integer.parseInt(content.split(" ")[2]), content.split(" ")[3]));
                                     break;
                             }
                         } catch (Exception e) {

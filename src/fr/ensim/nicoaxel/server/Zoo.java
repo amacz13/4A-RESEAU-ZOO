@@ -3,10 +3,7 @@ package fr.ensim.nicoaxel.server;
 import fr.ensim.nicoaxel.server.Animal;
 import fr.ensim.nicoaxel.server.Main;
 import fr.ensim.nicoaxel.server.Obstacle;
-import fr.ensim.nicoaxel.server.animals.Elephant;
-import fr.ensim.nicoaxel.server.animals.Fox;
-import fr.ensim.nicoaxel.server.animals.Lion;
-import fr.ensim.nicoaxel.server.animals.Zebra;
+import fr.ensim.nicoaxel.server.animals.*;
 import fr.ensim.nicoaxel.server.types.Espece;
 import javafx.scene.canvas.GraphicsContext;
 import org.apache.logging.log4j.LogManager;
@@ -101,6 +98,12 @@ public final class Zoo {
                 break;
             case ZEBRA:
                 a = new Zebra("", x,y);
+                break;
+            case UNICORN:
+                a = new Unicorn("", x,y);
+                break;
+            case MOULE:
+                a = new Moule("", x,y);
                 break;
             default:
                 a = new Fox("", x,y);

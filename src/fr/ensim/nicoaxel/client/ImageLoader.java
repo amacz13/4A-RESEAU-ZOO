@@ -33,6 +33,8 @@ public class ImageLoader implements Cloneable{
     public static Image zebra;
     public static Image elephant;
     public static Image fox;
+    public static Image unicorn;
+    public static Image moule;
     public static Image unknown;
     public static Image sand;
     public static Image corpse;
@@ -63,6 +65,18 @@ public class ImageLoader implements Cloneable{
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/animals/elephant.png").openStream();
         Files.copy(in, Paths.get("elephant.png"), StandardCopyOption.REPLACE_EXISTING);
         elephant = new CustomImage("file:" + Paths.get("elephant.png").toAbsolutePath().toString());
+
+
+        log.info("Downloading picture of moule...");
+        in = new URL("http://perso.univ-lemans.fr/~i152300/moule.png").openStream();
+        Files.copy(in, Paths.get("moule.png"), StandardCopyOption.REPLACE_EXISTING);
+        moule = new CustomImage("file:" + Paths.get("moule.png").toAbsolutePath().toString());
+
+
+        log.info("Downloading picture of elephant...");
+        in = new URL("http://perso.univ-lemans.fr/~i152300/unicorn.png").openStream();
+        Files.copy(in, Paths.get("unicorn.png"), StandardCopyOption.REPLACE_EXISTING);
+        unicorn = new CustomImage("file:" + Paths.get("unicorn.png").toAbsolutePath().toString());
 
         log.info("Downloading picture of fox...");
         in = new URL("https://zoodemiunicorn.azurewebsites.net/res/animals/fox.png").openStream();
@@ -99,6 +113,10 @@ public class ImageLoader implements Cloneable{
         Files.copy(in, Paths.get("corpse.png"), StandardCopyOption.REPLACE_EXISTING);
         corpse = new CustomImage("file:" + Paths.get("corpse.png").toAbsolutePath().toString());
 
+        log.info("Downloading wallpaper picture...");
+        in = new URL("http://perso.univ-lemans.fr/~i152300/wallpaper.png").openStream();
+        Files.copy(in, Paths.get("wallpaper.png"), StandardCopyOption.REPLACE_EXISTING);
+
         //Download sounds
         log.info("Downloading finished !");
     }
@@ -129,8 +147,9 @@ public class ImageLoader implements Cloneable{
         in = new URL("http://perso.univ-lemans.fr/~i152300/baby.mp3").openStream();
         Files.copy(in, Paths.get("baby.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("baby.mp3");
-/*
-        log.info("Downloading sound of baby...");
+
+/**/
+        log.info("Downloading sound of introduction song...");
         in = new URL("http://perso.univ-lemans.fr/~i152300/first_song.mp3").openStream();
         Files.copy(in, Paths.get("first_song.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("first_song.mp3");

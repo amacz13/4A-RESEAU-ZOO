@@ -175,6 +175,10 @@ public abstract class Animal {
                 return ImageLoader.elephant;
             case FOX:
                 return ImageLoader.fox;
+            case UNICORN:
+                return ImageLoader.unicorn;
+            case MOULE:
+                return ImageLoader.moule;
             default:
                 return ImageLoader.unknown;
         }
