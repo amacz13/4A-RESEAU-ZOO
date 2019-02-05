@@ -11,24 +11,28 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -47,6 +51,8 @@ public class Main extends Application {
     public static String pseudo = "Fantomas";
     public static String color = ".";
 
+    private Thread t;
+
     Pane root;
     Stage pstage;
 
@@ -57,6 +63,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws CloneNotSupportedException, MalformedURLException {
+
+
         pstage = primaryStage;
         MenuBar menuBar = new MenuBar();
 
@@ -118,6 +126,7 @@ public class Main extends Application {
 
         root = new Pane();
 
+
         ImageLoader il = new ImageLoader();
         try {
             il.loadImages();
@@ -138,6 +147,30 @@ public class Main extends Application {
             //app.
             app.setDockIconImage(Toolkit.getDefaultToolkit().getImage("lion.png"));
         }*/
+
+
+        File file = new File("wallpaper.png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+
+        HBox hbox = new HBox(imageView);
+
+        root.getChildren().add(hbox);
+
+        Button button = new Button("Partie rapide !");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                mainApp(root,pstage,"localhost",4321);
+            }
+        });
+        button.setLayoutY(sizeY*16/1.4-button.getHeight()/2);
+        button.setLayoutX(sizeX*16/2.4-button.getWidth()/2);
+
+        root.getChildren().addAll(button);
+
+
         root.getChildren().add(menuBar);
 
         pstage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -152,16 +185,24 @@ public class Main extends Application {
         pstage.getIcons().add((CustomImage) ImageLoader.lion);
         pstage.setResizable(false);
         Scene scene = new Scene(root, (16) * sizeX, (16) * sizeY);
+
         primaryStage.setScene(scene);
+
         pstage.show();
         System.out.println("Loading finished !");
+
+
+        t = new Thread(new BackgroundSound(Sound.FIRST_SONG));
+        t.start();
+
     }
 
     public void mainApp(Pane root, Stage primaryStage, String host, int port){
 
+        t.stop();
 
-        Thread t = new Thread(new BackgroundSound(Sound.MUSIC));
-        t.start();
+        Thread t2 = new Thread(new BackgroundSound(Sound.MUSIC));
+        t2.start();
 
 
         try {

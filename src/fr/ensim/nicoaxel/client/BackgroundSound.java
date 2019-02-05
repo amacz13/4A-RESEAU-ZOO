@@ -10,6 +10,7 @@ import java.io.IOException;
 public class BackgroundSound implements Runnable {
 
     private String sound;
+    private Player player;
 
     public BackgroundSound(String sound){
         this.sound = sound;
@@ -20,7 +21,7 @@ public class BackgroundSound implements Runnable {
     public void run() {
         while (true) {
             try {
-                Player player = new Player(new FileInputStream(sound));
+                player = new Player(new FileInputStream(sound));
                 player.play();
                 player.close();
             } catch (JavaLayerException e) {
@@ -32,6 +33,7 @@ public class BackgroundSound implements Runnable {
             }
         }
     }
+
 
 
 }

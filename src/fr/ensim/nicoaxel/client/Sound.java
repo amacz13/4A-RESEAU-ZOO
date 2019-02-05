@@ -12,6 +12,7 @@ public class Sound implements Runnable {
     public static final String DEATH_CORPSE = "death2.mp3";
     public static final String COUPLING = "coupling.mp3";
     public static final String BABY = "baby.mp3";
+    public static final String FIRST_SONG = "first_song.mp3";
 
     private String sound;
 
