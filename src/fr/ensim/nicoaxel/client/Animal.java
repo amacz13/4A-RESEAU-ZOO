@@ -13,6 +13,7 @@ public abstract class Animal {
     private static final Logger log = LogManager.getRootLogger();
     private static final double LIMIT = 8;
     private static final int LIMIT_DEATH = 35;
+    public int NB_BABY = 2;
 
     private int speed;       //speed : lower is faster
     private int countSpeed;  //countSpeed is a counter for move animal
@@ -90,7 +91,9 @@ public abstract class Animal {
             countSpeed = 0;
 
             if (espece.equals(Main.zoo.hasAnimal(this))) {
-                Main.zoo.generateBaby(x, y, espece);
+                for(int i=0 ; i<NB_BABY ; i++) {
+                    Main.zoo.generateBaby(x, y, espece);
+                }
             } else {
                 log.debug("Coupling without baby");
             }

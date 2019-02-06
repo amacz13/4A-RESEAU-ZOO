@@ -71,3 +71,7 @@ fabric.properties
 *.iml
 
 \.DS_Store
+
+*.png
+
+*.mp3
