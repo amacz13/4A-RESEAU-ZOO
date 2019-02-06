@@ -68,13 +68,13 @@ public class ImageLoader implements Cloneable{
 
 
         log.info("Downloading picture of moule...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/moule.png").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/moule.png").openStream();
         Files.copy(in, Paths.get("moule.png"), StandardCopyOption.REPLACE_EXISTING);
         moule = new CustomImage("file:" + Paths.get("moule.png").toAbsolutePath().toString());
 
 
         log.info("Downloading picture of elephant...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/unicorn.png").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/unicorn.png").openStream();
         Files.copy(in, Paths.get("unicorn.png"), StandardCopyOption.REPLACE_EXISTING);
         unicorn = new CustomImage("file:" + Paths.get("unicorn.png").toAbsolutePath().toString());
 
@@ -109,12 +109,12 @@ public class ImageLoader implements Cloneable{
         sand = new CustomImage("file:" + Paths.get("sand.png").toAbsolutePath().toString());
 
         log.info("Downloading picture of corpse...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/corpse2.png").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/corpse2.png").openStream();
         Files.copy(in, Paths.get("corpse.png"), StandardCopyOption.REPLACE_EXISTING);
         corpse = new CustomImage("file:" + Paths.get("corpse.png").toAbsolutePath().toString());
 
         log.info("Downloading wallpaper picture...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/wallpaper.png").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/wallpaper.png").openStream();
         Files.copy(in, Paths.get("wallpaper.png"), StandardCopyOption.REPLACE_EXISTING);
 
         //Download sounds
@@ -124,38 +124,38 @@ public class ImageLoader implements Cloneable{
     public static void loadSounds() throws IOException {
         InputStream in;
         log.info("Downloading sound of music...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/oui.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/oui.mp3").openStream();
         Files.copy(in, Paths.get("music.mp3"), StandardCopyOption.REPLACE_EXISTING);
         music = new FileInputStream("music.mp3");/**/
 
         log.info("Downloading sound of death...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/death.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/death.mp3").openStream();
         Files.copy(in, Paths.get("death.mp3"), StandardCopyOption.REPLACE_EXISTING);
         death = new FileInputStream("death.mp3");
 
         log.info("Downloading sound of death (by corpse)...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/death2.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/death2.mp3").openStream();
         Files.copy(in, Paths.get("death2.mp3"), StandardCopyOption.REPLACE_EXISTING);
         death2 = new FileInputStream("death2.mp3");
 
         log.info("Downloading sound of coupling...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/sex.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/sex.mp3").openStream();
         Files.copy(in, Paths.get("coupling.mp3"), StandardCopyOption.REPLACE_EXISTING);
         coupling = new FileInputStream("coupling.mp3");
 
         log.info("Downloading sound of baby...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/baby.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/baby.mp3").openStream();
         Files.copy(in, Paths.get("baby.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("baby.mp3");
 
 /**/
         log.info("Downloading sound of introduction song...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/first_song.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/first_song.mp3").openStream();
         Files.copy(in, Paths.get("first_song.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("first_song.mp3");
 
         log.info("Downloading sound of hang music...");
-        in = new URL("http://perso.univ-lemans.fr/~i152300/Hang.mp3").openStream();
+        in = new URL("http://perso.univ-lemans.fr/~i152300/ZOO/Hang.mp3").openStream();
         Files.copy(in, Paths.get("Hang.mp3"), StandardCopyOption.REPLACE_EXISTING);
         baby = new FileInputStream("Hang.mp3");
 /**/
